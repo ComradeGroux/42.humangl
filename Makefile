@@ -23,17 +23,12 @@ GLFW_DEP_DIR	:= $(DEPS_DIR)/glfw-$(GLFW_VER)
 GLFW_BUILD_DIR	:= $(BUILD_DIR)/glfw
 GLFW_LIB		:= $(GLFW_BUILD_DIR)/src/libglfw3.a
 
-GLM_VER			:= 1.0.3
-GLM_URL			:= https://github.com/g-truc/glm/archive/refs/tags/$(GLM_VER).tar.gz
-GLM_DEP_DIR		:= $(DEPS_DIR)/glm-$(GLM_VER)
-
 GLAD_DEP_DIR	:= $(DEPS_DIR)/glad
 GLAD_OBJ		:= $(OBJS_DIR)/glad.o
 
 CXX      := g++
 CXXFLAGS := -Wall -Wextra -Werror 
 INCLUDES := -I$(INCLUDE_DIR)           \
-            -I$(GLM_DEP_DIR)           \
             -I$(GLAD_DEP_DIR)/include  \
             -I$(GLFW_DEP_DIR)/include  \
             -I../include
@@ -50,7 +45,7 @@ $(TARGET): $(GLFW_LIB) $(GLAD_OBJ) $(OBJS)
 
 $(OBJS_DIR):
 	@mkdir -p $@
-$(OBJS): | $(GLFW_DEP_DIR) $(GLM_DEP_DIR) $(GLAD_DEP_DIR) $(OBJS_DIR)/.compile_start
+$(OBJS): | $(GLFW_DEP_DIR) $(GLAD_DEP_DIR) $(OBJS_DIR)/.compile_start
 $(OBJS_DIR)/.compile_start: $(SRCS)
 	@printf "$(BOLD)Compiling$(RESET)\n"
 	@touch $@
@@ -90,17 +85,6 @@ $(GLFW_LIB): $(GLFW_DEP_DIR) | $(OBJS_DIR)
 	@printf "$(GRAY)  Compiling...$(RESET)" && \
 	 $(MAKE) -C $(GLFW_BUILD_DIR) -j$(shell nproc) --no-print-directory > /dev/null 2>&1 && \
 	 printf "$(ERASE)"
-	@printf "$(GREEN)  ✓ Done$(RESET)\n"
-
-$(GLM_DEP_DIR): | $(DEPS_DIR)
-	@printf "$(BOLD)Downloading GLM $(GLM_VER)$(RESET)\n"
-	@printf "$(GRAY)  Fetching archive...$(RESET)" && \
-	 curl -sL $(GLM_URL) -o $(DEPS_DIR)/glm.tar.gz && \
-	 printf "$(ERASE)"
-	@printf "$(GRAY)  Extracting...$(RESET)" && \
-	 tar -xzf $(DEPS_DIR)/glm.tar.gz -C $(DEPS_DIR) && \
-	 printf "$(ERASE)"
-	@rm $(DEPS_DIR)/glm.tar.gz
 	@printf "$(GREEN)  ✓ Done$(RESET)\n"
 
 $(GLAD_DEP_DIR): | $(DEPS_DIR)
