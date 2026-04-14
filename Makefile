@@ -26,15 +26,18 @@ GLFW_LIB		:= $(GLFW_BUILD_DIR)/src/libglfw3.a
 GLAD_DEP_DIR	:= $(DEPS_DIR)/glad
 GLAD_OBJ		:= $(OBJS_DIR)/glad.o
 
-CXX      := g++
-CXXFLAGS := -Wall -Wextra -Werror 
-INCLUDES := -I$(INCLUDE_DIR)           \
+CXX			:= g++
+CXXFLAGS	:= -Wall -Wextra -Werror
+DEBUGFLAGS	:= -g -DDEBUG
+INCLUDES	:= -I$(INCLUDE_DIR)           \
             -I$(GLAD_DEP_DIR)/include  \
-            -I$(GLFW_DEP_DIR)/include  \
-            -I../include
-LDFLAGS  := -lm -lGL -lX11 -lXrandr -lXi
+            -I$(GLFW_DEP_DIR)/include/GLFW
+LDFLAGS 	:= -lm -lGL -lX11 -lXrandr -lXi
 
 all: $(TARGET)
+
+debug: CXXFLAGS += $(DEBUGFLAGS)
+debug: all
 
 $(TARGET): $(GLFW_LIB) $(GLAD_OBJ) $(OBJS)
 	@printf "$(BOLD)Linking $(TARGET)$(RESET)\n"
