@@ -2,8 +2,6 @@
 
 #include "glad/glad.h"
 
-#include <iostream>
-
 void	GLClearError();
 void	GLGetError(const char* function, const char* file, int line);
 
