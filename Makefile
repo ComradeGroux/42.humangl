@@ -17,6 +17,9 @@ SRCS	:= $(wildcard $(SRC_DIR)/*.cpp)
 VPATH	:= $(dir $(SRCS))
 OBJS	:= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 
+MATRIX_DIR	:= matrix
+MATRIX_LIB	:= $(MATRIX_DIR)/matrix.a
+
 GLFW_VER		:= 3.4
 GLFW_URL		:= https://github.com/glfw/glfw/archive/refs/tags/$(GLFW_VER).tar.gz
 GLFW_DEP_DIR	:= $(DEPS_DIR)/glfw-$(GLFW_VER)
@@ -29,8 +32,9 @@ GLAD_OBJ		:= $(OBJS_DIR)/glad.o
 CXX			:= g++
 CXXFLAGS	:= -Wall -Wextra -Werror
 DEBUGFLAGS	:= -g -DDEBUG
-INCLUDES	:= -I$(INCLUDE_DIR)           \
-               -I$(GLAD_DEP_DIR)/include  \
+INCLUDES	:= -I$(INCLUDE_DIR)					\
+               -I$(MATRIX_DIR)/include			\
+               -I$(GLAD_DEP_DIR)/include		\
                -I$(GLFW_DEP_DIR)/include/GLFW
 LDFLAGS 	:= -lm -lGL -lX11 -lXrandr -lXi
 
@@ -39,9 +43,9 @@ all: $(TARGET)
 debug: CXXFLAGS += $(DEBUGFLAGS)
 debug: all
 
-$(TARGET): $(GLFW_LIB) $(GLAD_OBJ) $(OBJS)
+$(TARGET): $(GLFW_LIB) $(GLAD_OBJ) $(MATRIX_LIB) $(OBJS)
 	@printf "$(BOLD)Linking $(TARGET)$(RESET)\n"
-	@$(CXX) $(OBJS) $(GLAD_OBJ) $(GLFW_LIB) $(LDFLAGS) -o $@
+	@$(CXX) $(OBJS) $(GLAD_OBJ) $(GLFW_LIB) $(MATRIX_LIB) $(LDFLAGS) -o $@
 	@printf "$(GREEN)  ✓ $(TARGET) ready$(RESET)\n"
 
 
@@ -57,7 +61,8 @@ $(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR)
 	 $(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ && \
 	 printf "$(ERASE)$(GREEN)  ✓ $<$(RESET)\n"\
 
-
+$(MATRIX_LIB):
+	$(MAKE) -sC $(@D)
 
 $(DEPS_DIR):
 	@mkdir -p $@
@@ -118,14 +123,15 @@ clean:
 
 fclean: clean
 	@printf "$(GRAY)  Removing $(BUILD_DIR) and $(TARGET)...$(RESET)" && \
-	 rm -rf $(BUILD_DIR) $(TARGET) && \
+	 rm -rf $(BUILD_DIR) $(TARGET) &&		\
+	 $(MAKE) -sC $(MATRIX_DIR) fclean &&	\
 	 printf "$(ERASE)"
 	@printf "$(GREEN)  ✓ $(TARGET) cleaned$(RESET)\n"
 
 dclean: fclean
 	@printf "$(GRAY)  Removing $(DEPS_DIR)...$(RESET)" && \
-	 rm -rf $(DEPS_DIR) && \
-	 rm -rf .venv && \
+	 rm -rf $(DEPS_DIR) &&	\
+	 rm -rf .venv &&		\
 	 printf "$(ERASE)"
 	@printf "$(GREEN)  ✓ Dependencies cleaned$(RESET)\n"
 

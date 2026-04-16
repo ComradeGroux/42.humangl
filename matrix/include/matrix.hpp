@@ -1,34 +1,6 @@
 #pragma once
 
 namespace matrix {
-	struct vec3;
-	struct mat3 {
-		float	data[9];
-		
-		mat3(void);
-		mat3(const mat3& rhs);
-		mat3&	operator=(const mat3& rhs);
-		
-		mat3	operator+(const mat3& rhs) const;
-		mat3	operator-(const mat3& rhs) const;
-		mat3	operator*(const mat3& rhs) const;
-		mat3	operator/(const mat3& rhs) const;
-	};
-	struct vec4;
-	struct mat4 {
-		float	data[16];
-
-		mat4(void);
-		mat4(const mat4& rhs);
-		mat4&	operator=(const mat4& rhs);
-
-		mat4	operator+(const mat4& rhs) const;
-		mat4	operator-(const mat4& rhs) const;
-		mat4	operator*(const mat4& rhs) const;
-		vec4	operator*(const vec4& rhs) const;
-		mat4	operator/(const mat4& rhs) const;
-	};
-
 	struct vec3 {
 		float	x;
 		float	y;
@@ -73,6 +45,32 @@ namespace matrix {
 		void	scale(float scalar);
 		float	length(void) const;
 		void	normalize(void);
+	};
+
+	struct mat3 {
+		float	data[9];
+		
+		mat3(void);
+		mat3(const mat3& rhs);
+		mat3&	operator=(const mat3& rhs);
+		
+		mat3	operator+(const mat3& rhs) const;
+		mat3	operator-(const mat3& rhs) const;
+		mat3	operator*(const mat3& rhs) const;
+		mat3	operator/(const mat3& rhs) const;
+	};
+	struct mat4 {
+		float	data[16];
+
+		mat4(void);
+		mat4(const mat4& rhs);
+		mat4&	operator=(const mat4& rhs);
+
+		mat4	operator+(const mat4& rhs) const;
+		mat4	operator-(const mat4& rhs) const;
+		mat4	operator*(const mat4& rhs) const;
+		vec4	operator*(const vec4& rhs) const;
+		mat4	operator/(const mat4& rhs) const;
 	};
 
 	vec3	scale(const vec3 vector, float scalar);
