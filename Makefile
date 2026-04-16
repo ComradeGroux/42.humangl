@@ -30,8 +30,8 @@ CXX			:= g++
 CXXFLAGS	:= -Wall -Wextra -Werror
 DEBUGFLAGS	:= -g -DDEBUG
 INCLUDES	:= -I$(INCLUDE_DIR)           \
-            -I$(GLAD_DEP_DIR)/include  \
-            -I$(GLFW_DEP_DIR)/include/GLFW
+               -I$(GLAD_DEP_DIR)/include  \
+               -I$(GLFW_DEP_DIR)/include/GLFW
 LDFLAGS 	:= -lm -lGL -lX11 -lXrandr -lXi
 
 all: $(TARGET)
