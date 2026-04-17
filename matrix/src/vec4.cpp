@@ -6,7 +6,7 @@ matrix::vec4::vec4(void) : x(0.0f), y(0.0f), z(0.0f), w(1.0f)
 {
 }
 
-matrix::vec4::vec4(float data) : x(data), y(data), z(data), w(1.0f)
+matrix::vec4::vec4(float data) : x(data), y(data), z(data), w(data)
 {
 }
 
@@ -34,12 +34,12 @@ matrix::vec4&	matrix::vec4::operator=(const vec4& rhs)
 
 matrix::vec4	matrix::vec4::operator+(const vec4& rhs) const
 {
-	vec4	res;
+	vec4	res = *this;
 
-	res.x = this->x + rhs.x;
-	res.y = this->y + rhs.y;
-	res.z = this->z + rhs.z;
-	res.w = this->w + rhs.w;
+	res.x += rhs.x;
+	res.y += rhs.y;
+	res.z += rhs.z;
+	res.w += rhs.w;
 
 	return res;
 }
@@ -53,12 +53,12 @@ matrix::vec4&	matrix::vec4::operator+=(const vec4& rhs)
 
 matrix::vec4	matrix::vec4::operator-(const vec4& rhs) const
 {
-	vec4	res;
+	vec4	res = *this;
 
-	res.x = this->x - rhs.x;
-	res.y = this->y - rhs.y;
-	res.z = this->z - rhs.z;
-	res.w = this->w - rhs.w;
+	res.x -= rhs.x;
+	res.y -= rhs.y;
+	res.z -= rhs.z;
+	res.w -= rhs.w;
 
 	return res;
 }
@@ -84,12 +84,12 @@ matrix::vec4	matrix::vec4::operator-(void) const
 
 matrix::vec4	matrix::vec4::operator*(const vec4& rhs) const
 {
-	vec4	res;
+	vec4	res = *this;
 
-	res.x = this->x * rhs.x;
-	res.y = this->y * rhs.y;
-	res.z = this->z * rhs.z;
-	res.w = this->w * rhs.w;
+	res.x *= rhs.x;
+	res.y *= rhs.y;
+	res.z *= rhs.z;
+	res.w *= rhs.w;
 
 	return res;
 }
@@ -113,14 +113,23 @@ matrix::vec4&	matrix::vec4::operator*=(const float scalar)
 	return *this;
 }
 
+matrix::vec4	matrix::operator*(const float scalar, const vec4& rhs)
+{
+	return rhs * scalar;
+}
+
 matrix::vec4	matrix::vec4::operator/(const vec4& rhs) const
 {
-	vec4	res;
+	vec4	res = *this;
 
-	res.x = this->x / rhs.x;
-	res.y = this->y / rhs.y;
-	res.z = this->z / rhs.z;
-	res.w = this->w / rhs.w;
+	if (rhs.x > 0.0f)
+		res.x /= rhs.x;
+	if (rhs.y > 0.0f)
+		res.y /= rhs.y;
+	if (rhs.z > 0.0f)
+		res.z /= rhs.z;
+	if (rhs.w > 0.0f)
+		res.w /= rhs.w;
 
 	return res;
 }
@@ -134,12 +143,15 @@ matrix::vec4&	matrix::vec4::operator/=(const vec4& rhs)
 
 matrix::vec4	matrix::vec4::operator/(const float scalar) const
 {
-	vec4	res;
+	vec4	res = *this;
 
-	res.x = this->x / scalar;
-	res.y = this->y / scalar;
-	res.z = this->z / scalar;
-	res.w = this->w / scalar;
+	if (scalar > 0.0f)
+	{
+		res.x /= scalar;
+		res.y /= scalar;
+		res.z /= scalar;
+		res.w /= scalar;
+	}
 
 	return res;
 }
@@ -174,17 +186,19 @@ void	matrix::vec4::scale(float scalar)
 
 float	matrix::vec4::length(void) const
 {
-	return std::sqrt(pow(this->x, 2.0f) + pow(this->y, 2.0f) + pow(this->z, 2.0f) + pow(this->w, 2.0f));
+	return std::sqrt(this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w);
 }
 
 void	matrix::vec4::normalize(void)
 {
 	float	len = this->length();
-
-	this->x = this->x / len;
-	this->y = this->y / len;
-	this->z = this->z / len;
-	this->w = this->w / len;
+	if (len > 0.0f)
+	{
+		this->x = this->x / len;
+		this->y = this->y / len;
+		this->z = this->z / len;
+		this->w = this->w / len;
+	}
 }
 
 std::ostream&	matrix::operator<<(std::ostream& os, const vec4& vector)
@@ -205,13 +219,16 @@ matrix::vec4	matrix::scale(const vec4& vector, float scalar)
 
 matrix::vec4	matrix::normalize(const vec4& vector)
 {
-	vec4	res;
-	float	len = vector.length();
+	vec4	res = vector;
 
-	res.x = vector.x / len;
-	res.y = vector.y / len;
-	res.z = vector.z / len;
-	res.w = vector.w / len;
+	float	len = res.length();
+	if (len > 0.0f)
+	{
+		res.x /= len;
+		res.y /= len;
+		res.z /= len;
+		res.w /= len;
+	}
 
 	return res;
 }
@@ -223,8 +240,8 @@ float	matrix::dot(const vec4& lhs, const vec4& rhs)
 
 matrix::vec3	matrix::cross(const vec4& lhs, const vec4& rhs)
 {
-	vec3	tempA(lhs.x / lhs.w, lhs.y / lhs.w, lhs.z / lhs.w);
-	vec3	tempB(rhs.x / rhs.w, rhs.y / rhs.w, rhs.z / rhs.w);
+	vec3	tempA(lhs);
+	vec3	tempB(rhs);
 
 	return cross(tempA, tempB);
 }

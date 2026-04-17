@@ -18,8 +18,18 @@ matrix::vec3::vec3(const vec3& rhs) : x(rhs.x), y(rhs.y), z(rhs.z)
 {
 }
 
-matrix::vec3::vec3(const vec4& rhs) : x(rhs.x / rhs.w), y(rhs.y / rhs.w), z(rhs.z / rhs.w)
+matrix::vec3::vec3(const vec4& rhs)
 {
+	x = rhs.x;
+	y = rhs.y;
+	z = rhs.z;
+
+	if (rhs.w > 0.0f)
+	{
+		x /= rhs.w;
+		y /= rhs.w;
+		z /= rhs.w;
+	}
 }
 
 matrix::vec3&	matrix::vec3::operator=(const vec3& rhs)
@@ -33,11 +43,11 @@ matrix::vec3&	matrix::vec3::operator=(const vec3& rhs)
 
 matrix::vec3	matrix::vec3::operator+(const vec3& rhs) const
 {
-	vec3	res;
+	vec3	res = *this;
 
-	res.x = this->x + rhs.x;
-	res.y = this->y + rhs.y;
-	res.z = this->z + rhs.z;
+	res.x += rhs.x;
+	res.y += rhs.y;
+	res.z += rhs.z;
 
 	return res;
 }
@@ -51,11 +61,11 @@ matrix::vec3&	matrix::vec3::operator+=(const vec3& rhs)
 
 matrix::vec3	matrix::vec3::operator-(const vec3& rhs) const
 {
-	vec3	res;
+	vec3	res = *this;
 
-	res.x = this->x - rhs.x;
-	res.y = this->y - rhs.y;
-	res.z = this->z - rhs.z;
+	res.x -= rhs.x;
+	res.y -= rhs.y;
+	res.z -= rhs.z;
 
 	return res;
 }
@@ -80,16 +90,34 @@ matrix::vec3	matrix::vec3::operator-(void) const
 
 matrix::vec3	matrix::vec3::operator*(const vec3& rhs) const
 {
-	vec3	res;
+	vec3	res = *this;
 
-	res.x = this->x * rhs.x;
-	res.y = this->y * rhs.y;
-	res.z = this->z * rhs.z;
+	res.x *= rhs.x;
+	res.y *= rhs.y;
+	res.z *= rhs.z;
 
 	return res;
 }
 
 matrix::vec3&	matrix::vec3::operator*=(const vec3& rhs)
+{
+	*this = *this * rhs;
+
+	return *this;
+}
+
+matrix::vec3	matrix::vec3::operator*(const mat3& rhs) const
+{
+	vec3	res;
+
+	res.x = this->x * rhs.data[0] + this->y * rhs.data[3] + this->z * rhs.data[6];
+	res.y = this->x * rhs.data[1] + this->y * rhs.data[4] + this->z * rhs.data[7];
+	res.z = this->x * rhs.data[2] + this->y * rhs.data[5] + this->z * rhs.data[8];
+
+	return res;
+}
+
+matrix::vec3&	matrix::vec3::operator*=(const mat3& rhs)
 {
 	*this = *this * rhs;
 
@@ -108,13 +136,21 @@ matrix::vec3&	matrix::vec3::operator*=(const float scalar)
 	return *this;
 }
 
+matrix::vec3	matrix::operator*(const float scalar, const vec3& rhs)
+{
+	return rhs * scalar;
+}
+
 matrix::vec3	matrix::vec3::operator/(const vec3& rhs) const
 {
-	vec3	res;
+	vec3	res = *this;
 
-	res.x = this->x / rhs.x;
-	res.y = this->y / rhs.y;
-	res.z = this->z / rhs.z;
+	if (rhs.x > 0.0f)
+		res.x /= rhs.x;
+	if (rhs.y > 0.0f)
+		res.y /= rhs.y;
+	if (rhs.z > 0.0f)
+		res.z /= rhs.z;
 
 	return res;
 }
@@ -128,11 +164,14 @@ matrix::vec3&	matrix::vec3::operator/=(const vec3& rhs)
 
 matrix::vec3	matrix::vec3::operator/(const float scalar) const
 {
-	vec3	res;
+	vec3	res = *this;
 
-	res.x = this->x / scalar;
-	res.y = this->y / scalar;
-	res.z = this->z / scalar;
+	if (scalar > 0.0f)
+	{
+		res.x /= scalar;
+		res.y /= scalar;
+		res.z /= scalar;
+	}
 
 	return res;
 }
@@ -166,16 +205,18 @@ void	matrix::vec3::scale(float scalar)
 
 float	matrix::vec3::length(void) const
 {
-	return std::sqrt(std::pow(this->x, 2.0f) + std::pow(this->y, 2.0f) + std::pow(this->z, 2.0f));
+	return std::sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 }
 
 void	matrix::vec3::normalize(void)
 {
 	float	len = this->length();
-
-	this->x = this->x / len;
-	this->y = this->y / len;
-	this->z = this->z / len;
+	if (len > 0.0f)
+	{
+		this->x /= len;
+		this->y /= len;
+		this->z /= len;
+	}
 }
 
 std::ostream&	matrix::operator<<(std::ostream& os, const vec3& vector)
@@ -185,7 +226,7 @@ std::ostream&	matrix::operator<<(std::ostream& os, const vec3& vector)
 	return os;
 }
 
-matrix::vec3	matrix::scale(const vec3 vector, float scalar)
+matrix::vec3	matrix::scale(const vec3& vector, float scalar)
 {
 	vec3	res = vector;
 
@@ -194,19 +235,22 @@ matrix::vec3	matrix::scale(const vec3 vector, float scalar)
 	return res;
 }
 
-matrix::vec3	matrix::normalize(const vec3 vector)
+matrix::vec3	matrix::normalize(const vec3& vector)
 {
-	vec3	res;
-	float	len = vector.length();
+	vec3	res = vector;
 
-	res.x = vector.x / len;
-	res.y = vector.y / len;
-	res.z = vector.z / len;
+	float	len = res.length();
+	if (len > 0.0f)
+	{
+		res.x /= len;
+		res.y /= len;
+		res.z /= len;
+	}
 
 	return res;
 }
 
-float	matrix::dot(const vec3 lhs, const vec3 rhs)
+float	matrix::dot(const vec3& lhs, const vec3& rhs)
 {
 	float	ret = 0.0f;
 
@@ -217,7 +261,7 @@ float	matrix::dot(const vec3 lhs, const vec3 rhs)
 	return ret;
 }
 
-matrix::vec3	matrix::cross(const vec3 lhs, const vec3 rhs)
+matrix::vec3	matrix::cross(const vec3& lhs, const vec3& rhs)
 {
 	vec3	ret;
 

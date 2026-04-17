@@ -1,9 +1,12 @@
 #pragma once
 
-struct mat3;
+namespace matrix { struct mat3; }
 #include "mat3.hpp"
-struct vec4;
+
+namespace matrix { struct vec4; }
 #include "vec4.hpp"
+
+#include <ostream>
 
 namespace matrix {
 	struct mat4 {
@@ -14,24 +17,27 @@ namespace matrix {
 		mat4(const mat3& rhs);
 		mat4&	operator=(const mat4& rhs);
 
-		mat4	operator+(const mat4& rhs) const;
-		mat4&	operator+=(const mat4& rhs);
-		mat4	operator-(const mat4& rhs) const;
-		mat4&	operator-=(const mat4& rhs);
-		mat4	operator-(void) const;
-		mat4	operator*(const mat4& rhs) const;
-		mat4&	operator*=(const mat4& rhs);
-		vec4	operator*(const vec4& rhs) const;
-		mat4	operator*(const float scalar) const;
-		mat4&	operator*=(const float scalar);
-		mat4	operator/(const mat4& rhs) const;
-		mat4&	operator/=(const mat4& rhs);
+		mat4		operator+(const mat4& rhs) const;
+		mat4&		operator+=(const mat4& rhs);
+		mat4		operator-(const mat4& rhs) const;
+		mat4&		operator-=(const mat4& rhs);
+		mat4		operator-(void) const;
+		mat4		operator*(const mat4& rhs) const;
+		mat4&		operator*=(const mat4& rhs);
+		vec4		operator*(const vec4& rhs) const;
+		mat4		operator*(const float scalar) const;
+		mat4&		operator*=(const float scalar);
+		friend mat4	operator*(const float scalar, const mat4& rhs);
+		mat4		operator/(const mat4& rhs) const;
+		mat4&		operator/=(const mat4& rhs);
 
 		bool	operator==(const mat4& rhs) const;
 		bool	operator!=(const mat4& rhs) const;
 
 		void	transpose(void);
 	};
+	std::ostream&	operator<<(std::ostream& os, const mat4& matrice);
+	mat4			operator*(const float scalar, const mat4& rhs);
 
 	void	identity(mat4& matrice);
 	float	determinant(const mat4& matrice);

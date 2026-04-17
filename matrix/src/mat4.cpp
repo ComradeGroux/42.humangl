@@ -19,7 +19,7 @@ matrix::mat4::mat4(const mat3& rhs)
 	this->data[0] = rhs.data[0];  this->data[4] = rhs.data[3];   this->data[8] = rhs.data[6];  this->data[12] = 0.0f;
 	this->data[1] = rhs.data[1];  this->data[5] = rhs.data[4];   this->data[9] = rhs.data[7];  this->data[13] = 0.0f;
 	this->data[2] = rhs.data[2];  this->data[6] = rhs.data[5];  this->data[10] = rhs.data[8];  this->data[14] = 0.0f;
-	this->data[3] = 0.0f;		  this->data[7] = 0.0f;			this->data[11] = 0.0f;		   this->data[15] = 0.0f;
+	this->data[3] = 0.0f;		  this->data[7] = 0.0f;			this->data[11] = 0.0f;		   this->data[15] = 1.0f;
 }
 
 matrix::mat4&	matrix::mat4::operator=(const mat4& rhs)
@@ -145,6 +145,11 @@ matrix::mat4&	matrix::mat4::operator*=(const float scalar)
 	return *this;
 }
 
+matrix::mat4	matrix::operator*(const float scalar, const mat4& rhs)
+{
+	return rhs * scalar;
+}
+
 matrix::mat4	matrix::mat4::operator/(const mat4& rhs) const
 {
 	return *this * invert(rhs);
@@ -180,6 +185,16 @@ void	matrix::mat4::transpose(void)
 	this->data[1] = tmp.data[4];  this->data[5] = tmp.data[5];  this->data[9] = tmp.data[6];   this->data[13] = tmp.data[7];
 	this->data[2] = tmp.data[8];  this->data[6] = tmp.data[9];  this->data[10] = tmp.data[10]; this->data[14] = tmp.data[11];
 	this->data[3] = tmp.data[12]; this->data[7] = tmp.data[13]; this->data[11] = tmp.data[14]; this->data[15] = tmp.data[15];
+}
+
+std::ostream&	matrix::operator<<(std::ostream& os, const mat4& matrice)
+{
+	os << "/ " << matrice.data[0] << " " << matrice.data[4] << " " << matrice.data[8] << " " << matrice.data[12] << " \\" << std::endl;
+	os << "| " << matrice.data[1] << " " << matrice.data[5] << " " << matrice.data[9] << " " << matrice.data[13] << " |" << std::endl;
+	os << "| " << matrice.data[2] << " " << matrice.data[6] << " " << matrice.data[10] << " " << matrice.data[14] << " |" << std::endl;
+	os << "\\ " << matrice.data[3] << " " << matrice.data[7] << " " << matrice.data[11] << " " << matrice.data[15] << " /" << std::endl;
+
+	return os;
 }
 
 void	matrix::identity(mat4& matrice)

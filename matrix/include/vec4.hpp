@@ -1,6 +1,6 @@
 #pragma once
 
-struct vec3;
+namespace matrix { struct vec3; }
 #include "vec3.hpp"
 
 #include <ostream>
@@ -19,19 +19,20 @@ namespace matrix {
 		vec4(const vec4& rhs);
 		vec4&	operator=(const vec4& rhs);
 
-		vec4	operator+(const vec4& rhs) const;
-		vec4&	operator+=(const vec4& rhs);
-		vec4	operator-(const vec4& rhs) const;
-		vec4&	operator-=(const vec4& rhs);
-		vec4	operator-(void) const;
-		vec4	operator*(const vec4& rhs) const;
-		vec4&	operator*=(const vec4& rhs);
-		vec4	operator*(const float scalar) const;
-		vec4&	operator*=(const float scalar);
-		vec4	operator/(const vec4& rhs) const;
-		vec4&	operator/=(const vec4& rhs);
-		vec4	operator/(const float scalar) const;
-		vec4&	operator/=(const float scalar);
+		vec4		operator+(const vec4& rhs) const;
+		vec4&		operator+=(const vec4& rhs);
+		vec4		operator-(const vec4& rhs) const;
+		vec4&		operator-=(const vec4& rhs);
+		vec4		operator-(void) const;
+		vec4		operator*(const vec4& rhs) const;
+		vec4&		operator*=(const vec4& rhs);
+		vec4		operator*(const float scalar) const;
+		vec4&		operator*=(const float scalar);
+		friend vec4	operator*(const float scalar, const vec4& rhs);
+		vec4		operator/(const vec4& rhs) const;
+		vec4&		operator/=(const vec4& rhs);
+		vec4		operator/(const float scalar) const;
+		vec4&		operator/=(const float scalar);
 
 		bool	operator==(const vec4& rhs) const;
 		bool	operator!=(const vec4& rhs) const;
@@ -41,6 +42,7 @@ namespace matrix {
 		void	normalize(void);
 	};
 	std::ostream&	operator<<(std::ostream& os, const vec4& vector);
+	vec4			operator*(const float scalar, const vec4& rhs);
 
 	vec4	scale(const vec4& vector, float scalar);
 	vec4	normalize(const vec4& vector);

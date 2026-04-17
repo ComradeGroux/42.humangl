@@ -102,6 +102,11 @@ matrix::mat3&	matrix::mat3::operator*=(const mat3& rhs)
 	return *this;
 }
 
+matrix::vec3	matrix::mat3::operator*(const vec3& rhs) const
+{
+	return rhs * *this;
+}
+
 matrix::mat3	matrix::mat3::operator*(const float scalar) const
 {
 	mat3	res = *this;
@@ -118,6 +123,11 @@ matrix::mat3&	matrix::mat3::operator*=(const float scalar)
 	*this = *this * scalar;
 
 	return *this;
+}
+
+matrix::mat3	matrix::operator*(const float scalar, const mat3& rhs)
+{
+	return rhs * scalar;
 }
 
 matrix::mat3	matrix::mat3::operator/(const mat3& rhs) const
@@ -154,6 +164,15 @@ void	matrix::mat3::transpose(void)
 	this->data[0] = tmp.data[0];  this->data[3] = tmp.data[1];  this->data[6] = tmp.data[2];
 	this->data[1] = tmp.data[3];  this->data[4] = tmp.data[4];  this->data[7] = tmp.data[5];
 	this->data[2] = tmp.data[6];  this->data[5] = tmp.data[7];  this->data[8] = tmp.data[8];
+}
+
+std::ostream&	matrix::operator<<(std::ostream& os, const mat3& matrice)
+{
+	os << "/ " << matrice.data[0] << " " << matrice.data[3] << " " << matrice.data[6] << " \\" << std::endl;
+	os << "| " << matrice.data[1] << " " << matrice.data[4] << " " << matrice.data[7] << " |" << std::endl;
+	os << "\\ " << matrice.data[2] << " " << matrice.data[5] << " " << matrice.data[8] << " /" << std::endl;
+
+	return os;
 }
 
 void	matrix::identity(mat3& matrice)
