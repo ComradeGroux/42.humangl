@@ -62,7 +62,7 @@ $(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR)
 	 printf "$(ERASE)$(GREEN)  ✓ $<$(RESET)\n"\
 
 $(MATRIX_LIB):
-	$(MAKE) -sC $(@D)
+	@$(MAKE) -sC $(@D) CXXFLAGS="$(CXXFLAGS)"
 
 $(DEPS_DIR):
 	@mkdir -p $@

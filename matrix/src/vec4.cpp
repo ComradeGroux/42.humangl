@@ -1,4 +1,4 @@
-#include "matrix.hpp"
+#include "vec4.hpp"
 
 #include <cmath>
 
@@ -6,11 +6,15 @@ matrix::vec4::vec4(void) : x(0.0f), y(0.0f), z(0.0f), w(1.0f)
 {
 }
 
-matrix::vec4::vec4(float data) : x(data), y(data), z(data), w(data)
+matrix::vec4::vec4(float data) : x(data), y(data), z(data), w(1.0f)
 {
 }
 
 matrix::vec4::vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w)
+{
+}
+
+matrix::vec4::vec4(const vec3& rhs, float w) : x(rhs.x), y(rhs.y), z(rhs.z), w(w)
 {
 }
 
@@ -40,6 +44,13 @@ matrix::vec4	matrix::vec4::operator+(const vec4& rhs) const
 	return res;
 }
 
+matrix::vec4&	matrix::vec4::operator+=(const vec4& rhs)
+{
+	*this = *this + rhs;
+
+	return *this;
+}
+
 matrix::vec4	matrix::vec4::operator-(const vec4& rhs) const
 {
 	vec4	res;
@@ -52,6 +63,13 @@ matrix::vec4	matrix::vec4::operator-(const vec4& rhs) const
 	return res;
 }
 
+matrix::vec4&	matrix::vec4::operator-=(const vec4& rhs)
+{
+	*this = *this - rhs;
+
+	return *this;
+}
+
 matrix::vec4	matrix::vec4::operator*(const vec4& rhs) const
 {
 	vec4	res;
@@ -61,12 +79,26 @@ matrix::vec4	matrix::vec4::operator*(const vec4& rhs) const
 	res.z = this->z * rhs.z;
 	res.w = this->w * rhs.w;
 
-	return rhs;
+	return res;
+}
+
+matrix::vec4&	matrix::vec4::operator*=(const vec4& rhs)
+{
+	*this = *this * rhs;
+
+	return *this;
 }
 
 matrix::vec4	matrix::vec4::operator*(const float scalar) const
 {
 	return matrix::scale(*this, scalar);
+}
+
+matrix::vec4&	matrix::vec4::operator*=(const float scalar)
+{
+	*this = *this * scalar;
+
+	return *this;
 }
 
 matrix::vec4	matrix::vec4::operator/(const vec4& rhs) const
@@ -81,6 +113,13 @@ matrix::vec4	matrix::vec4::operator/(const vec4& rhs) const
 	return res;
 }
 
+matrix::vec4&	matrix::vec4::operator/=(const vec4& rhs)
+{
+	*this = *this / rhs;
+
+	return *this;
+}
+
 matrix::vec4	matrix::vec4::operator/(const float scalar) const
 {
 	vec4	res;
@@ -91,6 +130,26 @@ matrix::vec4	matrix::vec4::operator/(const float scalar) const
 	res.w = this->w / scalar;
 
 	return res;
+}
+
+matrix::vec4&	matrix::vec4::operator/=(const float scalar)
+{
+	*this = *this / scalar;
+
+	return *this;
+}
+
+bool	matrix::vec4::operator==(const vec4& rhs) const
+{
+	if (this->x == rhs.x && this->y == rhs.y && this->z == rhs.z && this->w == rhs.w)
+		return true;
+	else
+		return false;
+}
+
+bool	matrix::vec4::operator!=(const vec4& rhs) const
+{
+	return !(*this == rhs);
 }
 
 void	matrix::vec4::scale(float scalar)

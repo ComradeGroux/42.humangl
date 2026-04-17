@@ -1,5 +1,6 @@
 #pragma once
 
+struct vec3;
 #include "vec3.hpp"
 
 namespace matrix {
@@ -12,15 +13,25 @@ namespace matrix {
 		vec4(void);
 		vec4(float data);
 		vec4(float x, float y, float z, float w);
+		vec4(const vec3& rhs, float w);
 		vec4(const vec4& rhs);
 		vec4&	operator=(const vec4& rhs);
 
 		vec4	operator+(const vec4& rhs) const;
+		vec4&	operator+=(const vec4& rhs);
 		vec4	operator-(const vec4& rhs) const;
+		vec4&	operator-=(const vec4& rhs);
 		vec4	operator*(const vec4& rhs) const;
+		vec4&	operator*=(const vec4& rhs);
 		vec4	operator*(const float scalar) const;
+		vec4&	operator*=(const float scalar);
 		vec4	operator/(const vec4& rhs) const;
+		vec4&	operator/=(const vec4& rhs);
 		vec4	operator/(const float scalar) const;
+		vec4&	operator/=(const float scalar);
+
+		bool	operator==(const vec4& rhs) const;
+		bool	operator!=(const vec4& rhs) const;
 
 		void	scale(float scalar);
 		float	length(void) const;

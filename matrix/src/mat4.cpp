@@ -1,6 +1,7 @@
-#include "matrix.hpp"
+#include "mat4.hpp"
 
 #include <stdexcept>
+#include <cmath>
 
 matrix::mat4::mat4(void)
 {
@@ -13,12 +14,131 @@ matrix::mat4::mat4(const mat4& rhs)
 	*this = rhs;
 }
 
+matrix::mat4::mat4(const mat3& rhs)
+{
+	this->data[0] = rhs.data[0];  this->data[4] = rhs.data[3];   this->data[8] = rhs.data[6];  this->data[12] = 0.0f;
+	this->data[1] = rhs.data[1];  this->data[5] = rhs.data[4];   this->data[9] = rhs.data[7];  this->data[13] = 0.0f;
+	this->data[2] = rhs.data[2];  this->data[6] = rhs.data[5];  this->data[10] = rhs.data[8];  this->data[14] = 0.0f;
+	this->data[3] = 0.0f;		  this->data[7] = 0.0f;			this->data[11] = 0.0f;		   this->data[15] = 0.0f;
+}
+
 matrix::mat4&	matrix::mat4::operator=(const mat4& rhs)
 {
 	for (unsigned char i = 0; i < 16; i++)
 		data[i] = rhs.data[i];
 
 	return *this;
+}
+
+matrix::mat4	matrix::mat4::operator+(const mat4& rhs) const
+{
+	mat4	res;
+
+	res.data[0] = this->data[0] + rhs.data[0];	res.data[4] = this->data[4] + rhs.data[4];	 res.data[8] =  this->data[8] + rhs.data[8];	res.data[12] = this->data[12] + rhs.data[12];
+	res.data[1] = this->data[1] + rhs.data[1];	res.data[5] = this->data[5] + rhs.data[5];	 res.data[9] =  this->data[9] + rhs.data[9];	res.data[13] = this->data[13] + rhs.data[13];
+	res.data[2] = this->data[2] + rhs.data[2];	res.data[6] = this->data[6] + rhs.data[6];	res.data[10] = this->data[10] + rhs.data[10];	res.data[14] = this->data[14] + rhs.data[14];
+	res.data[3] = this->data[3] + rhs.data[3];	res.data[7] = this->data[7] + rhs.data[7];	res.data[11] = this->data[11] + rhs.data[11];	res.data[15] = this->data[15] + rhs.data[15];
+
+	return res;
+}
+
+matrix::mat4&	matrix::mat4::operator+=(const mat4& rhs)
+{
+	*this = *this + rhs;
+
+	return *this;
+}
+
+matrix::mat4	matrix::mat4::operator-(const mat4& rhs) const
+{
+	mat4	res;
+
+	res.data[0] = this->data[0] - rhs.data[0];	res.data[4] = this->data[4] - rhs.data[4];	 res.data[8] =  this->data[8] - rhs.data[8];	res.data[12] = this->data[12] - rhs.data[12];
+	res.data[1] = this->data[1] - rhs.data[1];	res.data[5] = this->data[5] - rhs.data[5];	 res.data[9] =  this->data[9] - rhs.data[9];	res.data[13] = this->data[13] - rhs.data[13];
+	res.data[2] = this->data[2] - rhs.data[2];	res.data[6] = this->data[6] - rhs.data[6];	res.data[10] = this->data[10] - rhs.data[10];	res.data[14] = this->data[14] - rhs.data[14];
+	res.data[3] = this->data[3] - rhs.data[3];	res.data[7] = this->data[7] - rhs.data[7];	res.data[11] = this->data[11] - rhs.data[11];	res.data[15] = this->data[15] - rhs.data[15];
+
+	return res;
+}
+
+matrix::mat4&	matrix::mat4::operator-=(const mat4& rhs)
+{
+	*this = *this - rhs;
+
+	return *this;
+}
+
+matrix::mat4	matrix::mat4::operator*(const mat4& rhs) const
+{
+	mat4	res;
+
+	res.data[0]  = this->data[0] * rhs.data[0] + this->data[4] * rhs.data[1] +  this->data[8] * rhs.data[2] + this->data[12] * rhs.data[3];
+	res.data[1]  = this->data[1] * rhs.data[0] + this->data[5] * rhs.data[1] +  this->data[9] * rhs.data[2] + this->data[13] * rhs.data[3];
+	res.data[2]  = this->data[2] * rhs.data[0] + this->data[6] * rhs.data[1] + this->data[10] * rhs.data[2] + this->data[14] * rhs.data[3];
+	res.data[3]  = this->data[3] * rhs.data[0] + this->data[7] * rhs.data[1] + this->data[11] * rhs.data[2] + this->data[15] * rhs.data[3];
+
+	res.data[4]  = this->data[0] * rhs.data[4] + this->data[4] * rhs.data[5] +  this->data[8] * rhs.data[6] + this->data[12] * rhs.data[7];
+	res.data[5]  = this->data[1] * rhs.data[4] + this->data[5] * rhs.data[5] +  this->data[9] * rhs.data[6] + this->data[13] * rhs.data[7];
+	res.data[6]  = this->data[2] * rhs.data[4] + this->data[6] * rhs.data[5] + this->data[10] * rhs.data[6] + this->data[14] * rhs.data[7];
+	res.data[7]  = this->data[3] * rhs.data[4] + this->data[7] * rhs.data[5] + this->data[11] * rhs.data[6] + this->data[15] * rhs.data[7];
+
+	res.data[8]  = this->data[0] * rhs.data[8] + this->data[4] * rhs.data[9] +  this->data[8] * rhs.data[10] + this->data[12] * rhs.data[11];
+	res.data[9]  = this->data[1] * rhs.data[8] + this->data[5] * rhs.data[9] +  this->data[9] * rhs.data[10] + this->data[13] * rhs.data[11];
+	res.data[10] = this->data[2] * rhs.data[8] + this->data[6] * rhs.data[9] + this->data[10] * rhs.data[10] + this->data[14] * rhs.data[11];
+	res.data[11] = this->data[3] * rhs.data[8] + this->data[7] * rhs.data[9] + this->data[11] * rhs.data[10] + this->data[15] * rhs.data[11];
+
+	res.data[12] = this->data[0] * rhs.data[12] + this->data[4] * rhs.data[13] +  this->data[8] * rhs.data[14] + this->data[12] * rhs.data[15];
+	res.data[13] = this->data[1] * rhs.data[12] + this->data[5] * rhs.data[13] +  this->data[9] * rhs.data[14] + this->data[13] * rhs.data[15];
+	res.data[14] = this->data[2] * rhs.data[12] + this->data[6] * rhs.data[13] + this->data[10] * rhs.data[14] + this->data[14] * rhs.data[15];
+	res.data[15] = this->data[3] * rhs.data[12] + this->data[7] * rhs.data[13] + this->data[11] * rhs.data[14] + this->data[15] * rhs.data[15];
+
+	return res;
+}
+
+matrix::mat4&	matrix::mat4::operator*=(const mat4& rhs)
+{
+	*this = *this * rhs;
+
+	return *this;
+}
+
+matrix::vec4	matrix::mat4::operator*(const vec4& rhs) const
+{
+	vec4	res;
+
+	res.x = this->data[0] * rhs.x + this->data[4] * rhs.y +  this->data[8] * rhs.z + this->data[12] * rhs.w;
+	res.y = this->data[1] * rhs.x + this->data[5] * rhs.y +  this->data[9] * rhs.z + this->data[13] * rhs.w;
+	res.z = this->data[2] * rhs.x + this->data[6] * rhs.y + this->data[10] * rhs.z + this->data[14] * rhs.w;
+	res.w = this->data[3] * rhs.x + this->data[7] * rhs.y + this->data[11] * rhs.z + this->data[15] * rhs.w;
+
+	return res;
+}
+
+matrix::mat4	matrix::mat4::operator/(const mat4& rhs) const
+{
+	return *this * invert(rhs);
+}
+
+matrix::mat4&	matrix::mat4::operator/=(const mat4& rhs)
+{
+	*this = *this / rhs;
+
+	return *this;
+}
+
+bool	matrix::mat4::operator==(const mat4& rhs) const
+{
+	for (unsigned char i = 0; i < 16; i++)
+	{
+		if (this->data[i] != rhs.data[i])
+			return false;
+	}
+	return true;
+}
+
+bool	matrix::mat4::operator!=(const mat4& rhs) const
+{
+	return !(*this == rhs);
 }
 
 void	matrix::identity(mat4& matrice)
@@ -29,7 +149,7 @@ void	matrix::identity(mat4& matrice)
 	matrice.data[3] = 0.0f;	matrice.data[7] = 0.0f;	matrice.data[11] = 0.0f;	matrice.data[15] = 1.0f;
 }
 
-float	matrix::determinant(const mat4 matrice)
+float	matrix::determinant(const mat4& matrice)
 {
 	float	det = 0.0f;
 	float	s[6];
@@ -73,7 +193,7 @@ static float	mat4_det_fast(float s[6], float c[6])
 	return det;
 }
 
-matrix::mat4	matrix::invert(const mat4 matrice)
+matrix::mat4	matrix::invert(const mat4& matrice)
 {
 	float	s[6];
 	float	c[6];
@@ -93,7 +213,7 @@ matrix::mat4	matrix::invert(const mat4 matrice)
 	c[5] = matrice.data[10] * matrice.data[15] - matrice.data[14] * matrice.data[11];
 
 	float	det = mat4_det_fast(s, c);
-	if (det == 0.0f)
+	if (std::fabs(det) < 1e-6f)
 		#ifdef DEBUG
 			throw std::runtime_error("Matrice is not invertible");
 		#else
@@ -126,70 +246,3 @@ matrix::mat4	matrix::invert(const mat4 matrice)
 	return res;
 }
 
-matrix::mat4	matrix::mat4::operator+(const mat4& rhs) const
-{
-	mat4	res;
-
-	res.data[0] = this->data[0] + rhs.data[0];	res.data[4] = this->data[4] + rhs.data[4];	 res.data[8] =  this->data[8] + rhs.data[8];	res.data[12] = this->data[12] + rhs.data[12];
-	res.data[1] = this->data[1] + rhs.data[1];	res.data[5] = this->data[5] + rhs.data[5];	 res.data[9] =  this->data[9] + rhs.data[9];	res.data[13] = this->data[13] + rhs.data[13];
-	res.data[2] = this->data[2] + rhs.data[2];	res.data[6] = this->data[6] + rhs.data[6];	res.data[10] = this->data[10] + rhs.data[10];	res.data[14] = this->data[14] + rhs.data[14];
-	res.data[3] = this->data[3] + rhs.data[3];	res.data[7] = this->data[7] + rhs.data[7];	res.data[11] = this->data[11] + rhs.data[11];	res.data[15] = this->data[15] + rhs.data[15];
-
-	return res;
-}
-
-matrix::mat4	matrix::mat4::operator-(const mat4& rhs) const
-{
-	mat4	res;
-
-	res.data[0] = this->data[0] - rhs.data[0];	res.data[4] = this->data[4] - rhs.data[4];	 res.data[8] =  this->data[8] - rhs.data[8];	res.data[12] = this->data[12] - rhs.data[12];
-	res.data[1] = this->data[1] - rhs.data[1];	res.data[5] = this->data[5] - rhs.data[5];	 res.data[9] =  this->data[9] - rhs.data[9];	res.data[13] = this->data[13] - rhs.data[13];
-	res.data[2] = this->data[2] - rhs.data[2];	res.data[6] = this->data[6] - rhs.data[6];	res.data[10] = this->data[10] - rhs.data[10];	res.data[14] = this->data[14] - rhs.data[14];
-	res.data[3] = this->data[3] - rhs.data[3];	res.data[7] = this->data[7] - rhs.data[7];	res.data[11] = this->data[11] - rhs.data[11];	res.data[15] = this->data[15] - rhs.data[15];
-
-	return res;
-}
-
-matrix::mat4	matrix::mat4::operator*(const mat4& rhs) const
-{
-	mat4	res;
-
-	res.data[0]  = this->data[0] * rhs.data[0] + this->data[4] * rhs.data[1] +  this->data[8] * rhs.data[2] + this->data[12] * rhs.data[3];
-	res.data[1]  = this->data[1] * rhs.data[0] + this->data[5] * rhs.data[1] +  this->data[9] * rhs.data[2] + this->data[13] * rhs.data[3];
-	res.data[2]  = this->data[2] * rhs.data[0] + this->data[6] * rhs.data[1] + this->data[10] * rhs.data[2] + this->data[14] * rhs.data[3];
-	res.data[3]  = this->data[3] * rhs.data[0] + this->data[7] * rhs.data[1] + this->data[11] * rhs.data[2] + this->data[15] * rhs.data[3];
-
-	res.data[4]  = this->data[0] * rhs.data[4] + this->data[4] * rhs.data[5] +  this->data[8] * rhs.data[6] + this->data[12] * rhs.data[7];
-	res.data[5]  = this->data[1] * rhs.data[4] + this->data[5] * rhs.data[5] +  this->data[9] * rhs.data[6] + this->data[13] * rhs.data[7];
-	res.data[6]  = this->data[2] * rhs.data[4] + this->data[6] * rhs.data[5] + this->data[10] * rhs.data[6] + this->data[14] * rhs.data[7];
-	res.data[7]  = this->data[3] * rhs.data[4] + this->data[7] * rhs.data[5] + this->data[11] * rhs.data[6] + this->data[15] * rhs.data[7];
-
-	res.data[8]  = this->data[0] * rhs.data[8] + this->data[4] * rhs.data[9] +  this->data[8] * rhs.data[10] + this->data[12] * rhs.data[11];
-	res.data[9]  = this->data[1] * rhs.data[8] + this->data[5] * rhs.data[9] +  this->data[9] * rhs.data[10] + this->data[13] * rhs.data[11];
-	res.data[10] = this->data[2] * rhs.data[8] + this->data[6] * rhs.data[9] + this->data[10] * rhs.data[10] + this->data[14] * rhs.data[11];
-	res.data[11] = this->data[3] * rhs.data[8] + this->data[7] * rhs.data[9] + this->data[11] * rhs.data[10] + this->data[15] * rhs.data[11];
-
-	res.data[12] = this->data[0] * rhs.data[12] + this->data[4] * rhs.data[13] +  this->data[8] * rhs.data[14] + this->data[12] * rhs.data[15];
-	res.data[13] = this->data[1] * rhs.data[12] + this->data[5] * rhs.data[13] +  this->data[9] * rhs.data[14] + this->data[13] * rhs.data[15];
-	res.data[14] = this->data[2] * rhs.data[12] + this->data[6] * rhs.data[13] + this->data[10] * rhs.data[14] + this->data[14] * rhs.data[15];
-	res.data[15] = this->data[3] * rhs.data[12] + this->data[7] * rhs.data[13] + this->data[11] * rhs.data[14] + this->data[15] * rhs.data[15];
-
-	return res;
-}
-
-matrix::vec4	matrix::mat4::operator*(const vec4& rhs) const
-{
-	vec4	res;
-
-	res.x = this->data[0] * rhs.x + this->data[4] * rhs.y +  this->data[8] * rhs.z + this->data[12] * rhs.w;
-	res.y = this->data[1] * rhs.x + this->data[5] * rhs.y +  this->data[9] * rhs.z + this->data[13] * rhs.w;
-	res.z = this->data[2] * rhs.x + this->data[6] * rhs.y + this->data[10] * rhs.z + this->data[14] * rhs.w;
-	res.w = this->data[3] * rhs.x + this->data[7] * rhs.y + this->data[11] * rhs.z + this->data[15] * rhs.w;
-
-	return res;
-}
-
-matrix::mat4	matrix::mat4::operator/(const mat4& rhs) const
-{
-	return *this * invert(rhs);
-}

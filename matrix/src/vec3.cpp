@@ -1,4 +1,4 @@
-#include "matrix.hpp"
+#include "vec3.hpp"
 
 #include <cmath>
 
@@ -15,6 +15,10 @@ matrix::vec3::vec3(float x, float y, float z) : x(x), y(y), z(z)
 }
 
 matrix::vec3::vec3(const vec3& rhs) : x(rhs.x), y(rhs.y), z(rhs.z)
+{
+}
+
+matrix::vec3::vec3(const vec4& rhs) : x(rhs.x / rhs.w), y(rhs.y / rhs.w), z(rhs.z / rhs.w)
 {
 }
 
@@ -38,6 +42,13 @@ matrix::vec3	matrix::vec3::operator+(const vec3& rhs) const
 	return res;
 }
 
+matrix::vec3&	matrix::vec3::operator+=(const vec3& rhs)
+{
+	*this = *this + rhs;
+
+	return *this;
+}
+
 matrix::vec3	matrix::vec3::operator-(const vec3& rhs) const
 {
 	vec3	res;
@@ -47,6 +58,13 @@ matrix::vec3	matrix::vec3::operator-(const vec3& rhs) const
 	res.z = this->z - rhs.z;
 
 	return res;
+}
+
+matrix::vec3&	matrix::vec3::operator-=(const vec3& rhs)
+{
+	*this = *this - rhs;
+
+	return *this;
 }
 
 matrix::vec3	matrix::vec3::operator*(const vec3& rhs) const
@@ -60,9 +78,23 @@ matrix::vec3	matrix::vec3::operator*(const vec3& rhs) const
 	return res;
 }
 
+matrix::vec3&	matrix::vec3::operator*=(const vec3& rhs)
+{
+	*this = *this * rhs;
+
+	return *this;
+}
+
 matrix::vec3	matrix::vec3::operator*(const float scalar) const
 {
 	return matrix::scale(*this, scalar);
+}
+
+matrix::vec3&	matrix::vec3::operator*=(const float scalar)
+{
+	*this = *this * scalar;
+
+	return *this;
 }
 
 matrix::vec3	matrix::vec3::operator/(const vec3& rhs) const
@@ -76,6 +108,13 @@ matrix::vec3	matrix::vec3::operator/(const vec3& rhs) const
 	return res;
 }
 
+matrix::vec3&	matrix::vec3::operator/=(const vec3& rhs)
+{
+	*this = *this / rhs;
+
+	return *this;
+}
+
 matrix::vec3	matrix::vec3::operator/(const float scalar) const
 {
 	vec3	res;
@@ -85,6 +124,26 @@ matrix::vec3	matrix::vec3::operator/(const float scalar) const
 	res.z = this->z / scalar;
 
 	return res;
+}
+
+matrix::vec3&	matrix::vec3::operator/=(const float scalar)
+{
+	*this = *this / scalar;
+
+	return *this;
+}
+
+bool	matrix::vec3::operator==(const vec3& rhs) const
+{
+	if (this->x == rhs.x && this->y == rhs.y && this->z == rhs.z)
+		return true;
+	else
+		return false;
+}
+
+bool	matrix::vec3::operator!=(const vec3& rhs) const
+{
+	return !(*this == rhs);
 }
 
 void	matrix::vec3::scale(float scalar)
@@ -106,6 +165,18 @@ void	matrix::vec3::normalize(void)
 	this->x = this->x / len;
 	this->y = this->y / len;
 	this->z = this->z / len;
+}
+
+matrix::vec3	matrix::normalize(const vec3 vector)
+{
+	vec3	res;
+	float	len = vector.length();
+
+	res.x = vector.x / len;
+	res.y = vector.y / len;
+	res.z = vector.z / len;
+
+	return res;
 }
 
 matrix::vec3	matrix::scale(const vec3 vector, float scalar)
