@@ -70,6 +70,18 @@ matrix::vec4&	matrix::vec4::operator-=(const vec4& rhs)
 	return *this;
 }
 
+matrix::vec4	matrix::vec4::operator-(void) const
+{
+	vec4	res;
+
+	res.x = -(this->x);
+	res.y = -(this->y);
+	res.z = -(this->z);
+	res.w = -(this->w);
+
+	return res;
+}
+
 matrix::vec4	matrix::vec4::operator*(const vec4& rhs) const
 {
 	vec4	res;
@@ -175,7 +187,14 @@ void	matrix::vec4::normalize(void)
 	this->w = this->w / len;
 }
 
-matrix::vec4	matrix::scale(const vec4 vector, float scalar)
+std::ostream&	matrix::operator<<(std::ostream& os, const vec4& vector)
+{
+	os << "x: " << vector.x << " | y: " << vector.y << " | z: " << vector.z << " | w: " << vector.w;
+
+	return os;
+}
+
+matrix::vec4	matrix::scale(const vec4& vector, float scalar)
 {
 	vec4	res = vector;
 
@@ -184,12 +203,25 @@ matrix::vec4	matrix::scale(const vec4 vector, float scalar)
 	return res;
 }
 
-float	matrix::dot(const vec4 lhs, const vec4 rhs)
+matrix::vec4	matrix::normalize(const vec4& vector)
+{
+	vec4	res;
+	float	len = vector.length();
+
+	res.x = vector.x / len;
+	res.y = vector.y / len;
+	res.z = vector.z / len;
+	res.w = vector.w / len;
+
+	return res;
+}
+
+float	matrix::dot(const vec4& lhs, const vec4& rhs)
 {
 	return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
 }
 
-matrix::vec3	matrix::cross(const vec4 lhs, const vec4 rhs)
+matrix::vec3	matrix::cross(const vec4& lhs, const vec4& rhs)
 {
 	vec3	tempA(lhs.x / lhs.w, lhs.y / lhs.w, lhs.z / lhs.w);
 	vec3	tempB(rhs.x / rhs.w, rhs.y / rhs.w, rhs.z / rhs.w);

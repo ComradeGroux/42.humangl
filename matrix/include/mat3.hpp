@@ -16,16 +16,22 @@ namespace matrix {
 		mat3&	operator+=(const mat3& rhs);
 		mat3	operator-(const mat3& rhs) const;
 		mat3&	operator-=(const mat3& rhs);
+		mat3	operator-(void) const;
 		mat3	operator*(const mat3& rhs) const;
 		mat3&	operator*=(const mat3& rhs);
+		mat3	operator*(const float scalar) const;
+		mat3&	operator*=(const float scalar);
 		mat3	operator/(const mat3& rhs) const;
 		mat3&	operator/=(const mat3& rhs);
 
 		bool	operator==(const mat3& rhs) const;
 		bool	operator!=(const mat3& rhs) const;
+
+		void	transpose(void);
 	};
 
 	void	identity(mat3& matrice);
 	float	determinant(const mat3& matrice);
 	mat3	invert(const mat3& matrice);
+	mat3	transpose(const mat3& matrice);
 }

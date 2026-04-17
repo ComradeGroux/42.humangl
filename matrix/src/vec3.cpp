@@ -67,6 +67,17 @@ matrix::vec3&	matrix::vec3::operator-=(const vec3& rhs)
 	return *this;
 }
 
+matrix::vec3	matrix::vec3::operator-(void) const
+{
+	vec3	res;
+
+	res.x = -(this->x);
+	res.y = -(this->y);
+	res.z = -(this->z);
+
+	return res;
+}
+
 matrix::vec3	matrix::vec3::operator*(const vec3& rhs) const
 {
 	vec3	res;
@@ -167,6 +178,22 @@ void	matrix::vec3::normalize(void)
 	this->z = this->z / len;
 }
 
+std::ostream&	matrix::operator<<(std::ostream& os, const vec3& vector)
+{
+	os << "x: " << vector.x << " | y: " << vector.y << " | z: " << vector.z;
+
+	return os;
+}
+
+matrix::vec3	matrix::scale(const vec3 vector, float scalar)
+{
+	vec3	res = vector;
+
+	res.scale(scalar);
+
+	return res;
+}
+
 matrix::vec3	matrix::normalize(const vec3 vector)
 {
 	vec3	res;
@@ -175,15 +202,6 @@ matrix::vec3	matrix::normalize(const vec3 vector)
 	res.x = vector.x / len;
 	res.y = vector.y / len;
 	res.z = vector.z / len;
-
-	return res;
-}
-
-matrix::vec3	matrix::scale(const vec3 vector, float scalar)
-{
-	vec3	res = vector;
-
-	res.scale(scalar);
 
 	return res;
 }

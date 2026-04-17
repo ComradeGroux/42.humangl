@@ -68,6 +68,18 @@ matrix::mat4&	matrix::mat4::operator-=(const mat4& rhs)
 	return *this;
 }
 
+matrix::mat4	matrix::mat4::operator-(void) const
+{
+	mat4	res;
+
+	res.data[0] = -(this->data[0]);	res.data[4] = -(this->data[4]);	 res.data[8] =  -(this->data[8]);	res.data[12] = -(this->data[12]);
+	res.data[1] = -(this->data[1]);	res.data[5] = -(this->data[5]);	 res.data[9] =  -(this->data[9]);	res.data[13] = -(this->data[13]);
+	res.data[2] = -(this->data[2]);	res.data[6] = -(this->data[6]);	res.data[10] = -(this->data[10]);	res.data[14] = -(this->data[14]);
+	res.data[3] = -(this->data[3]);	res.data[7] = -(this->data[7]);	res.data[11] = -(this->data[11]);	res.data[15] = -(this->data[15]);
+
+	return res;
+}
+
 matrix::mat4	matrix::mat4::operator*(const mat4& rhs) const
 {
 	mat4	res;
@@ -114,6 +126,25 @@ matrix::vec4	matrix::mat4::operator*(const vec4& rhs) const
 	return res;
 }
 
+matrix::mat4	matrix::mat4::operator*(const float scalar) const
+{
+	mat4	res;
+
+	res.data[0] = this->data[0] * scalar;	res.data[4] = this->data[4] * scalar;	 res.data[8] =  this->data[8] * scalar;	res.data[12] = this->data[12] * scalar;
+	res.data[1] = this->data[1] * scalar;	res.data[5] = this->data[5] * scalar;	 res.data[9] =  this->data[9] * scalar;	res.data[13] = this->data[13] * scalar;
+	res.data[2] = this->data[2] * scalar;	res.data[6] = this->data[6] * scalar;	res.data[10] = this->data[10] * scalar;	res.data[14] = this->data[14] * scalar;
+	res.data[3] = this->data[3] * scalar;	res.data[7] = this->data[7] * scalar;	res.data[11] = this->data[11] * scalar;	res.data[15] = this->data[15] * scalar;
+
+	return res;
+}
+
+matrix::mat4&	matrix::mat4::operator*=(const float scalar)
+{
+	*this = *this * scalar;
+
+	return *this;
+}
+
 matrix::mat4	matrix::mat4::operator/(const mat4& rhs) const
 {
 	return *this * invert(rhs);
@@ -139,6 +170,16 @@ bool	matrix::mat4::operator==(const mat4& rhs) const
 bool	matrix::mat4::operator!=(const mat4& rhs) const
 {
 	return !(*this == rhs);
+}
+
+void	matrix::mat4::transpose(void)
+{
+	mat4	tmp = *this;
+
+	this->data[0] = tmp.data[0];  this->data[4] = tmp.data[1];  this->data[8] = tmp.data[2];   this->data[12] = tmp.data[3];
+	this->data[1] = tmp.data[4];  this->data[5] = tmp.data[5];  this->data[9] = tmp.data[6];   this->data[13] = tmp.data[7];
+	this->data[2] = tmp.data[8];  this->data[6] = tmp.data[9];  this->data[10] = tmp.data[10]; this->data[14] = tmp.data[11];
+	this->data[3] = tmp.data[12]; this->data[7] = tmp.data[13]; this->data[11] = tmp.data[14]; this->data[15] = tmp.data[15];
 }
 
 void	matrix::identity(mat4& matrice)
@@ -246,3 +287,14 @@ matrix::mat4	matrix::invert(const mat4& matrice)
 	return res;
 }
 
+matrix::mat4	matrix::transpose(const mat4& matrice)
+{
+	mat4	res;
+
+	res.data[0] = matrice.data[0];  res.data[4] = matrice.data[1];   res.data[8] = matrice.data[2];  res.data[12] = matrice.data[3];
+	res.data[1] = matrice.data[4];  res.data[5] = matrice.data[5];   res.data[9] = matrice.data[6];  res.data[13] = matrice.data[7];
+	res.data[2] = matrice.data[8];  res.data[6] = matrice.data[9];  res.data[10] = matrice.data[10]; res.data[14] = matrice.data[11];
+	res.data[3] = matrice.data[12]; res.data[7] = matrice.data[13]; res.data[11] = matrice.data[14]; res.data[15] = matrice.data[15];
+
+	return res;
+}

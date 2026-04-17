@@ -3,6 +3,8 @@
 struct vec4;
 #include "vec4.hpp"
 
+#include <ostream>
+
 namespace matrix {
 	struct vec3 {
 		float	x;
@@ -20,6 +22,7 @@ namespace matrix {
 		vec3&	operator+=(const vec3& rhs);
 		vec3	operator-(const vec3& rhs) const;
 		vec3&	operator-=(const vec3& rhs);
+		vec3	operator-(void) const;
 		vec3	operator*(const vec3& rhs) const;
 		vec3&	operator*=(const vec3& rhs);
 		vec3	operator*(const float scalar) const;
@@ -36,6 +39,7 @@ namespace matrix {
 		float	length(void) const;
 		void	normalize(void);
 	};
+	std::ostream&	operator<<(std::ostream& os, const vec3& vector);
 
 	vec3	scale(const vec3 vector, float scalar);
 	vec3	normalize(const vec3 vector);
