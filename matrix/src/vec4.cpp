@@ -101,6 +101,25 @@ matrix::vec4&	matrix::vec4::operator*=(const vec4& rhs)
 	return *this;
 }
 
+matrix::vec4	matrix::vec4::operator*(const mat4& rhs) const
+{
+	vec4	res;
+
+	res.x = this->x * rhs.data[0] + this->y * rhs.data[4] + this->z * rhs.data[8] + this->w * rhs.data[12];
+	res.y = this->x * rhs.data[1] + this->y * rhs.data[5] + this->z * rhs.data[9] + this->w * rhs.data[13];
+	res.z = this->x * rhs.data[2] + this->y * rhs.data[6] + this->z * rhs.data[10] + this->w * rhs.data[14];
+	res.w = this->x * rhs.data[3] + this->y * rhs.data[7] + this->z * rhs.data[11] + this->w * rhs.data[15];
+
+	return res;
+}
+
+matrix::vec4&	matrix::vec4::operator*=(const mat4& rhs)
+{
+	*this = *this * rhs;
+
+	return *this;
+}
+
 matrix::vec4	matrix::vec4::operator*(const float scalar) const
 {
 	return matrix::scale(*this, scalar);

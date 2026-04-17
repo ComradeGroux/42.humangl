@@ -1,5 +1,7 @@
 #pragma once
 
+namespace matrix { struct vec3; }
+#include "vec3.hpp"
 namespace matrix { struct mat4; }
 #include "mat4.hpp"
 
