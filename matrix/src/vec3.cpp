@@ -24,7 +24,7 @@ matrix::vec3::vec3(const vec4& rhs)
 	y = rhs.y;
 	z = rhs.z;
 
-	if (rhs.w > 0.0f)
+	if (std::fabs(rhs.w) > 1e-6f)
 	{
 		x /= rhs.w;
 		y /= rhs.w;
@@ -145,11 +145,11 @@ matrix::vec3	matrix::vec3::operator/(const vec3& rhs) const
 {
 	vec3	res = *this;
 
-	if (rhs.x > 0.0f)
+	if (std::fabs(rhs.x) > 1e-6f)
 		res.x /= rhs.x;
-	if (rhs.y > 0.0f)
+	if (std::fabs(rhs.y) > 1e-6f)
 		res.y /= rhs.y;
-	if (rhs.z > 0.0f)
+	if (std::fabs(rhs.z) > 1e-6f)
 		res.z /= rhs.z;
 
 	return res;
@@ -166,7 +166,7 @@ matrix::vec3	matrix::vec3::operator/(const float scalar) const
 {
 	vec3	res = *this;
 
-	if (scalar > 0.0f)
+	if (std::fabs(scalar) > 1e-6f)
 	{
 		res.x /= scalar;
 		res.y /= scalar;
@@ -219,6 +219,11 @@ void	matrix::vec3::normalize(void)
 	}
 }
 
+matrix::vec2	matrix::vec3::xy(void) const
+{
+	return vec2(this->x, this->y);
+}
+
 std::ostream&	matrix::operator<<(std::ostream& os, const vec3& vector)
 {
 	os << "x: " << vector.x << " | y: " << vector.y << " | z: " << vector.z;
@@ -233,6 +238,11 @@ matrix::vec3	matrix::scale(const vec3& vector, float scalar)
 	res.scale(scalar);
 
 	return res;
+}
+
+float	matrix::length(const vec3& vector)
+{
+	return vector.length();
 }
 
 matrix::vec3	matrix::normalize(const vec3& vector)
