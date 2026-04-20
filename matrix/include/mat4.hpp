@@ -36,6 +36,9 @@ namespace matrix {
 		bool	operator==(const mat4& rhs) const;
 		bool	operator!=(const mat4& rhs) const;
 
+		float&			operator[](int i);
+		const float&	operator[](int i) const;
+
 		void	transpose(void);
 		void	scale(const vec3& vector);
 	};

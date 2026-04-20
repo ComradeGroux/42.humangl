@@ -33,6 +33,9 @@ namespace matrix {
 		bool	operator==(const mat3& rhs) const;
 		bool	operator!=(const mat3& rhs) const;
 
+		float&			operator[](int i);
+		const float&	operator[](int i) const;
+
 		void	transpose(void);
 	};
 	std::ostream&	operator<<(std::ostream& os, const mat3& matrice);

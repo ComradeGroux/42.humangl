@@ -104,7 +104,13 @@ matrix::mat3&	matrix::mat3::operator*=(const mat3& rhs)
 
 matrix::vec3	matrix::mat3::operator*(const vec3& rhs) const
 {
-	return rhs * *this;
+	vec3 res;
+
+	res.x = data[0] * rhs.x + data[3] * rhs.y + data[6] * rhs.z;
+	res.y = data[1] * rhs.x + data[4] * rhs.y + data[7] * rhs.z;
+	res.z = data[2] * rhs.x + data[5] * rhs.y + data[8] * rhs.z;
+
+	return res;
 }
 
 matrix::mat3	matrix::mat3::operator*(const float scalar) const
@@ -156,6 +162,17 @@ bool	matrix::mat3::operator!=(const mat3& rhs) const
 {
 	return !(*this == rhs);
 }
+
+float&	matrix::mat3::operator[](int i)
+{
+	return this->data[i];
+}
+
+const float&	matrix::mat3::operator[](int i) const
+{
+	return this->data[i];
+}
+
 
 void	matrix::mat3::transpose(void)
 {

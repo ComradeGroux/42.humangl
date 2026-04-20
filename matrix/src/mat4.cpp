@@ -116,12 +116,19 @@ matrix::mat4&	matrix::mat4::operator*=(const mat4& rhs)
 
 matrix::vec3	matrix::mat4::operator*(const vec3& rhs) const
 {
-	return vec3(vec4(rhs, 1.0f) * *this);
+	return vec3(*this * vec4(rhs, 1.0f));
 }
 
 matrix::vec4	matrix::mat4::operator*(const vec4& rhs) const
 {
-	return rhs * *this;
+	vec4 res;
+
+	res.x = data[0] * rhs.x + data[4] * rhs.y + data[8] * rhs.z  + data[12] * rhs.w;
+	res.y = data[1] * rhs.x + data[5] * rhs.y + data[9] * rhs.z  + data[13] * rhs.w;
+	res.z = data[2] * rhs.x + data[6] * rhs.y + data[10] * rhs.z + data[14] * rhs.w;
+	res.w = data[3] * rhs.x + data[7] * rhs.y + data[11] * rhs.z + data[15] * rhs.w;
+
+	return res;
 }
 
 matrix::mat4	matrix::mat4::operator*(const float scalar) const
@@ -164,7 +171,7 @@ bool	matrix::mat4::operator==(const mat4& rhs) const
 {
 	for (unsigned char i = 0; i < 16; i++)
 	{
-		if (this->data[i] != rhs.data[i])
+		if (std::fabs(this->data[i] - rhs.data[i]) > 1e-6f)
 			return false;
 	}
 	return true;
@@ -174,6 +181,17 @@ bool	matrix::mat4::operator!=(const mat4& rhs) const
 {
 	return !(*this == rhs);
 }
+
+float&	matrix::mat4::operator[](int i)
+{
+	return this->data[i];
+}
+
+const float&	matrix::mat4::operator[](int i) const
+{
+	return this->data[i];
+}
+
 
 void	matrix::mat4::transpose(void)
 {
@@ -190,7 +208,6 @@ void	matrix::mat4::scale(const vec3& vector)
 	this->data[0] *= vector.x;  this->data[4] *= vector.y;  this->data[8] *= vector.z;
 	this->data[1] *= vector.x;  this->data[5] *= vector.y;  this->data[9] *= vector.z;
 	this->data[2] *= vector.x;  this->data[6] *= vector.y; this->data[10] *= vector.z;
-	this->data[3] *= vector.x;  this->data[7] *= vector.y; this->data[11] *= vector.z;
 }
 
 std::ostream&	matrix::operator<<(std::ostream& os, const mat4& matrice)

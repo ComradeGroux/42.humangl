@@ -40,14 +40,62 @@ matrix::mat4	matrix::rotate(const mat4& matrice, float angle_degrees, const vec3
 	rotation.data[7]  = 0.0f;
 
 	rotation.data[8]  = tan * a.x * a.z + sin * a.y;
-	rotation.data[9]  = tan * a.y * a.y - sin * a.x;
+	rotation.data[9]  = tan * a.y * a.z - sin * a.x;
 	rotation.data[10] = tan * a.z * a.z + cos;
 	rotation.data[11] = 0.0f;
 
 	rotation.data[12] = 0.0f;
+	rotation.data[13] = 0.0f;
 	rotation.data[14] = 0.0f;
-	rotation.data[15] = 0.0f;
 	rotation.data[15] = 1.0f;
+
+	return matrice * rotation;
+}
+
+matrix::mat4	matrix::rotateX(const matrix::mat4& matrice, float angle_degrees)
+{
+	mat4	rotation;
+	identity(rotation);
+	float	angle = deg_to_radians(angle_degrees);
+	float	cos = std::cos(angle);
+	float	sin = std::sin(angle);
+
+	rotation.data[5] = cos;
+	rotation.data[6] = sin;
+	rotation.data[9] = -sin;
+	rotation.data[10] = cos;
+
+	return matrice * rotation;
+}
+
+matrix::mat4	matrix::rotateY(const matrix::mat4& matrice, float angle_degrees)
+{
+	mat4	rotation;
+	identity(rotation);
+	float	angle = deg_to_radians(angle_degrees);
+	float	cos = std::cos(angle);
+	float	sin = std::sin(angle);
+
+	rotation.data[0] = cos;
+	rotation.data[2] = -sin;
+	rotation.data[8] = sin;
+	rotation.data[10] = cos;
+
+	return matrice * rotation;
+}
+
+matrix::mat4	matrix::rotateZ(const matrix::mat4& matrice, float angle_degrees)
+{
+	mat4	rotation;
+	identity(rotation);
+	float	angle = deg_to_radians(angle_degrees);
+	float	cos = std::cos(angle);
+	float	sin = std::sin(angle);
+
+	rotation.data[0] = cos;
+	rotation.data[1] = sin;
+	rotation.data[4] = -sin;
+	rotation.data[5] = cos;
 
 	return matrice * rotation;
 }
@@ -95,7 +143,7 @@ matrix::mat4	matrix::perspective(float fov, float aspect, float near, float far)
 	pers.data[5]  = 1.0f  / tanHalfFov;
 	pers.data[10] = -(far + near) / (far - near);
 	pers.data[11] = -1.0f;
-	pers.data[14] = -(2.0f * far * near) / (far * near);
+	pers.data[14] = -(2.0f * far * near) / (far - near);
 
 	return pers;
 }
