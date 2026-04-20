@@ -7,7 +7,7 @@
 namespace matrix {
 	mat3	normalMatrix(const mat4& model);
 	mat4	translate(const mat4& matrice, const vec3& vector);
-	mat4	rotate(const mat4& matrice, float angle_radians, const vec3& axis);
+	mat4	rotate(const mat4& matrice, float angle_degrees, const vec3& axis);
 	mat4	lookAt(const vec3& eye, const vec3& center, const vec3& up);
 	mat4	perspective(float fov, float aspect, float near, float far);
 	mat4	ortho(float left, float right, float bottom, float top, float near, float far);
