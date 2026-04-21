@@ -92,3 +92,29 @@ void	clearOpenGLInstance(GLFWwindow *window)
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
+
+BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
+{
+	BoneNode*	head = new BoneNode(drawFunc);
+	BoneNode*	torso = new BoneNode(drawFunc);
+	BoneNode*	upperArmLeft = new BoneNode(drawFunc);
+	BoneNode*	foreArmLeft = new BoneNode(drawFunc);
+	BoneNode*	upperArmRight = new BoneNode(drawFunc);
+	BoneNode*	foreArmRight = new BoneNode(drawFunc);
+	BoneNode*	upperLegLeft = new BoneNode(drawFunc);
+	BoneNode*	lowerLegLeft = new BoneNode(drawFunc);
+	BoneNode*	upperLegRight = new BoneNode(drawFunc);
+	BoneNode*	lowerLegRight = new BoneNode(drawFunc);
+
+	torso->addChild(head);
+	torso->addChild(upperArmLeft);
+	upperArmLeft->addChild(foreArmLeft);
+	torso->addChild(upperArmRight);
+	upperArmRight->addChild(foreArmRight);
+	torso->addChild(upperLegLeft);
+	upperLegLeft->addChild(lowerLegLeft);
+	torso->addChild(upperLegRight);
+	upperLegRight->addChild(lowerLegRight);
+
+	return torso;
+}
