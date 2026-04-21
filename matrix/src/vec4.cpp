@@ -314,5 +314,5 @@ matrix::vec4	matrix::lerp(const vec4&a, const vec4& b, float t)
 	res.z = a.z + t * (b.z - a.z);
 	res.w = a.w + t * (b.w - a.w);
 
-	return res;
+	return res;	
 }
