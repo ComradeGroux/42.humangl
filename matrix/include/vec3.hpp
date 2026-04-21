@@ -45,15 +45,20 @@ namespace matrix {
 		void	scale(float scalar);
 		float	length(void) const;
 		void	normalize(void);
+		void	clamp(float min, float max);
 
 		vec2	xy(void) const;
 	};
 	std::ostream&	operator<<(std::ostream& os, const vec3& vector);
 	vec3			operator*(const float scalar, const vec3& rhs);
 
+	vec3	fromHomogeneous(const vec4& vector);
+
 	vec3	scale(const vec3& vector, float scalar);
 	float	length(const vec3& vector);
 	vec3	normalize(const vec3& vector);
+	vec3	clamp(const vec3& vector, float min, float max);
+
 	float	dot(const vec3& lhs, const vec3& rhs);
 	vec3	cross(const vec3& lhs, const vec3& rhs);
 	vec3	reflect(const vec3& vector, const vec3& normal);

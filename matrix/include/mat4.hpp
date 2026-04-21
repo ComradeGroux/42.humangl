@@ -38,6 +38,7 @@ namespace matrix {
 
 		float&			operator[](int i);
 		const float&	operator[](int i) const;
+		const float*	ptr(void) const;
 
 		void	transpose(void);
 		void	scale(const vec3& vector);

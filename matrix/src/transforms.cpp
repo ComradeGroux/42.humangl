@@ -134,10 +134,10 @@ matrix::mat4	matrix::lookAt(const vec3& eye, const vec3& center, const vec3& up)
 	return lookDirection;
 }
 
-matrix::mat4	matrix::perspective(float fov, float aspect, float near, float far)
+matrix::mat4	matrix::perspective(float fov_degrees, float aspect, float near, float far)
 {
 	mat4	pers;
-	float	tanHalfFov = std::tan(fov / 2.0f);
+	float	tanHalfFov = std::tan(deg_to_radians(fov_degrees) / 2.0f);
 
 	pers.data[0]  = 1.0f / (aspect * tanHalfFov);
 	pers.data[5]  = 1.0f  / tanHalfFov;

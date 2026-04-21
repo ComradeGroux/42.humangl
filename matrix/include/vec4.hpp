@@ -46,6 +46,7 @@ namespace matrix {
 		void	scale(float scalar);
 		float	length(void) const;
 		void	normalize(void);
+		void	clamp(float min, float max);
 
 		vec3	xyz(void) const;
 		vec2	xy(void) const;
@@ -56,6 +57,10 @@ namespace matrix {
 	vec4	scale(const vec4& vector, float scalar);
 	float	length(const vec4& vector);
 	vec4	normalize(const vec4& vector);
+	vec4	clamp(const vec4& vector, float min, float max);
+
 	float	dot(const vec4& lhs, const vec4& rhs);
 	vec3	cross(const vec4& lhs, const vec4& rhs);
+	vec4	reflect(const vec4& vector, const vec4& normal);
+	vec4	lerp(const vec4& a, const vec4& b, float t);
 }

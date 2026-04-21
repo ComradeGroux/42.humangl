@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <cmath>
+#include <cassert>
 
 matrix::mat4::mat4(void)
 {
@@ -184,14 +185,24 @@ bool	matrix::mat4::operator!=(const mat4& rhs) const
 
 float&	matrix::mat4::operator[](int i)
 {
+	#ifdef DEBUG
+		assert(i >= 0 && i < 16);
+	#endif
 	return this->data[i];
 }
 
 const float&	matrix::mat4::operator[](int i) const
 {
+	#ifdef DEBUG
+		assert(i >= 0 && i < 16);
+	#endif
 	return this->data[i];
 }
 
+const float*	matrix::mat4::ptr(void) const
+{
+	return &data[0];
+}
 
 void	matrix::mat4::transpose(void)
 {

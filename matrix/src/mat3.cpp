@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <cmath>
+#include <cassert>
 
 matrix::mat3::mat3(void)
 {
@@ -152,7 +153,7 @@ bool	matrix::mat3::operator==(const mat3& rhs) const
 {
 	for (unsigned char i = 0; i < 9; i++)
 	{
-		if (this->data[i] != rhs.data[i])
+		if (std::fabs(data[i] - rhs.data[i]) > 1e-6f)
 			return false;
 	}
 	return true;
@@ -165,14 +166,24 @@ bool	matrix::mat3::operator!=(const mat3& rhs) const
 
 float&	matrix::mat3::operator[](int i)
 {
+	#ifdef DEBUG
+		assert(i >= 0 && i < 9);
+	#endif
 	return this->data[i];
 }
 
 const float&	matrix::mat3::operator[](int i) const
 {
+	#ifdef DEBUG
+		assert(i >= 0 && i < 9);
+	#endif
 	return this->data[i];
 }
 
+const float*	matrix::mat3::ptr(void) const
+{
+	return &data[0];
+}
 
 void	matrix::mat3::transpose(void)
 {

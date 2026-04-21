@@ -1,4 +1,5 @@
 #include "vec3.hpp"
+#include "utils.hpp"
 
 #include <cmath>
 
@@ -18,18 +19,8 @@ matrix::vec3::vec3(const vec3& rhs) : x(rhs.x), y(rhs.y), z(rhs.z)
 {
 }
 
-matrix::vec3::vec3(const vec4& rhs)
+matrix::vec3::vec3(const vec4& rhs) : x(rhs.x), y(rhs.y), z(rhs.z)
 {
-	x = rhs.x;
-	y = rhs.y;
-	z = rhs.z;
-
-	if (std::fabs(rhs.w) > 1e-6f)
-	{
-		x /= rhs.w;
-		y /= rhs.w;
-		z /= rhs.w;
-	}
 }
 
 matrix::vec3&	matrix::vec3::operator=(const vec3& rhs)
@@ -185,7 +176,7 @@ matrix::vec3&	matrix::vec3::operator/=(const float scalar)
 
 bool	matrix::vec3::operator==(const vec3& rhs) const
 {
-	if (this->x == rhs.x && this->y == rhs.y && this->z == rhs.z)
+	if (std::fabs(x - rhs.x) < 1e-6f && std::fabs(y - rhs.y) < 1e-6f && std::fabs(z - rhs.z) < 1e-6f)
 		return true;
 	else
 		return false;
@@ -219,6 +210,13 @@ void	matrix::vec3::normalize(void)
 	}
 }
 
+void	matrix::vec3::clamp(float min, float max)
+{
+	x = matrix::clamp(x, min, max);
+	y = matrix::clamp(y, min, max);
+	z = matrix::clamp(z, min, max);
+}
+
 matrix::vec2	matrix::vec3::xy(void) const
 {
 	return vec2(this->x, this->y);
@@ -229,6 +227,20 @@ std::ostream&	matrix::operator<<(std::ostream& os, const vec3& vector)
 	os << "x: " << vector.x << " | y: " << vector.y << " | z: " << vector.z;
 
 	return os;
+}
+
+matrix::vec3	matrix::fromHomogeneous(const vec4& vector)
+{
+	vec3	res(vector);
+
+	if (std::fabs(vector.w) > 1e-6f)
+	{
+		res.x /= vector.w;
+		res.y /= vector.w;
+		res.z /= vector.w;
+	}
+
+	return res;
 }
 
 matrix::vec3	matrix::scale(const vec3& vector, float scalar)
@@ -260,6 +272,15 @@ matrix::vec3	matrix::normalize(const vec3& vector)
 	return res;
 }
 
+matrix::vec3	matrix::clamp(const vec3& vector, float min, float max)
+{
+	vec3	res = vector;
+
+	res.clamp(min, max);
+
+	return res;
+}
+
 float	matrix::dot(const vec3& lhs, const vec3& rhs)
 {
 	float	ret = 0.0f;
@@ -280,4 +301,22 @@ matrix::vec3	matrix::cross(const vec3& lhs, const vec3& rhs)
 	ret.z = lhs.x * rhs.y - lhs.y * rhs.x;
 
 	return ret;
+}
+
+matrix::vec3	matrix::reflect(const vec3& vector, const vec3& normal)
+{
+	vec3	normalizedNormal = normalize(normal);
+
+	return vector - 2 * dot(vector, normalizedNormal) * normalizedNormal;
+}
+
+matrix::vec3	matrix::lerp(const vec3&a, const vec3& b, float t)
+{
+	vec3	res;
+
+	res.x = a.x + t * (b.x - a.x);
+	res.y = a.y + t * (b.y - a.y);
+	res.z = a.z + t * (b.z - a.z);
+
+	return res;
 }

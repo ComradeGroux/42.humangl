@@ -1,4 +1,5 @@
 #include "vec4.hpp"
+#include "utils.hpp"
 
 #include <cmath>
 
@@ -184,7 +185,7 @@ matrix::vec4&	matrix::vec4::operator/=(const float scalar)
 
 bool	matrix::vec4::operator==(const vec4& rhs) const
 {
-	if (this->x == rhs.x && this->y == rhs.y && this->z == rhs.z && this->w == rhs.w)
+	if (std::fabs(x - rhs.x) < 1e-6f && std::fabs(y - rhs.y) < 1e-6f && std::fabs(z - rhs.z) < 1e-6f && std::fabs(w - rhs.w) < 1e-6f)
 		return true;
 	else
 		return false;
@@ -218,6 +219,14 @@ void	matrix::vec4::normalize(void)
 		this->z = this->z / len;
 		this->w = this->w / len;
 	}
+}
+
+void	matrix::vec4::clamp(float min, float max)
+{
+	x = matrix::clamp(x, min, max);
+	y = matrix::clamp(y, min, max);
+	z = matrix::clamp(z, min, max);
+	w = matrix::clamp(w, min, max);
 }
 
 matrix::vec3	matrix::vec4::xyz(void) const
@@ -267,6 +276,15 @@ matrix::vec4	matrix::normalize(const vec4& vector)
 	return res;
 }
 
+matrix::vec4	matrix::clamp(const vec4& vector, float min, float max)
+{
+	vec4	res = vector;
+
+	res.clamp(min, max);
+
+	return res;
+}
+
 float	matrix::dot(const vec4& lhs, const vec4& rhs)
 {
 	return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
@@ -278,4 +296,23 @@ matrix::vec3	matrix::cross(const vec4& lhs, const vec4& rhs)
 	vec3	tempB(rhs);
 
 	return cross(tempA, tempB);
+}
+
+matrix::vec4	matrix::reflect(const vec4& vector, const vec4& normal)
+{
+	vec4	normalizedNormal = normalize(normal);
+
+	return vector - 2 * dot(vector, normalizedNormal) * normalizedNormal;
+}
+
+matrix::vec4	matrix::lerp(const vec4&a, const vec4& b, float t)
+{
+	vec4	res;
+
+	res.x = a.x + t * (b.x - a.x);
+	res.y = a.y + t * (b.y - a.y);
+	res.z = a.z + t * (b.z - a.z);
+	res.w = a.w + t * (b.w - a.w);
+
+	return res;
 }
