@@ -132,7 +132,7 @@ matrix::mat3&	matrix::mat3::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::mat3	matrix::operator*(const float scalar, const mat3& rhs)
+matrix::mat3	operator*(const float scalar, const matrix::mat3& rhs)
 {
 	return rhs * scalar;
 }
@@ -194,6 +194,22 @@ void	matrix::mat3::transpose(void)
 	this->data[2] = tmp.data[6];  this->data[5] = tmp.data[7];  this->data[8] = tmp.data[8];
 }
 
+void	matrix::mat3::normalize(void)
+{
+	vec3	c0(this->data[0], this->data[1], this->data[2]);
+	c0.normalize();
+
+	vec3	c1(this->data[3], this->data[4], this->data[5]);
+	float	dotLen = dot(c0, c1);
+	c1 = c1 - dotLen * c0;
+	c1.normalize();
+
+	vec3	c2 = cross(c0, c1);
+	this->data[0] = c0.x; this->data[3] = c1.x; this->data[6] = c2.x;
+	this->data[1] = c0.y; this->data[4] = c1.y; this->data[7] = c2.y;
+	this->data[2] = c0.z; this->data[5] = c1.z; this->data[8] = c2.z;
+}
+
 std::ostream&	matrix::operator<<(std::ostream& os, const mat3& matrice)
 {
 	os << "/ " << matrice.data[0] << " " << matrice.data[3] << " " << matrice.data[6] << " \\" << std::endl;
@@ -219,6 +235,14 @@ float	matrix::determinant(const mat3& matrice)
 	det += matrice.data[6] * (matrice.data[1] * matrice.data[5] - matrice.data[4] * matrice.data[2]);
 
 	return det;
+}
+
+matrix::mat3	matrix::normalize(const mat3& matrice)
+{
+	mat3	res = matrice;
+	res.normalize();
+
+	return res;
 }
 
 matrix::mat3	matrix::invert(const mat3& matrice)

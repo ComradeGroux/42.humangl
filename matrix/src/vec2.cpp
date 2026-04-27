@@ -143,7 +143,7 @@ matrix::vec2&	matrix::vec2::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::vec2	matrix::operator*(const float scalar, const matrix::vec2& rhs)
+matrix::vec2	operator*(const float scalar, const matrix::vec2& rhs)
 {
 	return rhs * scalar;
 }
@@ -288,14 +288,4 @@ matrix::vec2	matrix::reflect(const vec2& vector, const vec2& normal)
 	vec2	normalizedNormal = normalize(normal);
 
 	return vector - 2 * dot(vector, normalizedNormal) * normalizedNormal;
-}
-
-matrix::vec2	matrix::lerp(const vec2& a, const vec2& b, float t)
-{
-	vec2	res;
-
-	res.x = a.x + t * (b.x - a.x);
-	res.y = a.y + t * (b.y - a.y);
-
-	return res;
 }

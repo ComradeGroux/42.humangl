@@ -6,6 +6,8 @@ namespace matrix { struct vec3; }
 #include "vec3.hpp"
 namespace matrix { struct vec4; }
 #include "vec4.hpp"
+namespace matrix { struct quaternion; }
+#include "quaternion.hpp"
 
 #include <ostream>
 
@@ -42,12 +44,15 @@ namespace matrix {
 
 		void	transpose(void);
 		void	scale(const vec3& vector);
+		void	normalize(void);
+
+		quaternion	toQuat(void) const;
 	};
 	std::ostream&	operator<<(std::ostream& os, const mat4& matrice);
-	mat4			operator*(const float scalar, const mat4& rhs);
 
 	void	identity(mat4& matrice);
 	float	determinant(const mat4& matrice);
+	mat4	normalize(const mat4& matrice);
 	mat4	invert(const mat4& matrice);
 	mat4	transpose(const mat4& matrice);
 	mat4	scale(const mat4& matrice, const vec3& vector);

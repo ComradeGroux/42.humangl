@@ -49,7 +49,6 @@ namespace matrix {
 		void	clamp(float min, float max);
 	};
 	std::ostream&	operator<<(std::ostream& os, const vec2& vector);
-	vec2			operator*(const float scalar, const vec2& rhs);
 
 	vec2	scale(const vec2& vector, float scalar);
 	float	length(const vec2& vector);
@@ -59,5 +58,4 @@ namespace matrix {
 	float	dot(const vec2& lhs, const vec2& rhs);
 	float	cross(const vec2& lhs, const vec2& rhs);
 	vec2	reflect(const vec2& vector, const vec2& normal);
-	vec2	lerp(const vec2& a, const vec2& b, float t);
 }

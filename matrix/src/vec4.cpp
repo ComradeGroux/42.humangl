@@ -133,7 +133,7 @@ matrix::vec4&	matrix::vec4::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::vec4	matrix::operator*(const float scalar, const vec4& rhs)
+matrix::vec4	operator*(const float scalar, const matrix::vec4& rhs)
 {
 	return rhs * scalar;
 }
@@ -303,16 +303,4 @@ matrix::vec4	matrix::reflect(const vec4& vector, const vec4& normal)
 	vec4	normalizedNormal = normalize(normal);
 
 	return vector - 2 * dot(vector, normalizedNormal) * normalizedNormal;
-}
-
-matrix::vec4	matrix::lerp(const vec4&a, const vec4& b, float t)
-{
-	vec4	res;
-
-	res.x = a.x + t * (b.x - a.x);
-	res.y = a.y + t * (b.y - a.y);
-	res.z = a.z + t * (b.z - a.z);
-	res.w = a.w + t * (b.w - a.w);
-
-	return res;	
 }

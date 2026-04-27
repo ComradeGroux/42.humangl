@@ -38,12 +38,13 @@ namespace matrix {
 		const float*	ptr(void) const;
 
 		void	transpose(void);
+		void	normalize(void);
 	};
 	std::ostream&	operator<<(std::ostream& os, const mat3& matrice);
-	mat3			operator*(const float scalar, const mat3& rhs);
 
 	void	identity(mat3& matrice);
 	float	determinant(const mat3& matrice);
+	mat3	normalize(const mat3& matrice);
 	mat3	invert(const mat3& matrice);
 	mat3	transpose(const mat3& matrice);
 }

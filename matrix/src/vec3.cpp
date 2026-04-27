@@ -127,7 +127,7 @@ matrix::vec3&	matrix::vec3::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::vec3	matrix::operator*(const float scalar, const vec3& rhs)
+matrix::vec3	operator*(const float scalar, const matrix::vec3& rhs)
 {
 	return rhs * scalar;
 }
@@ -229,7 +229,7 @@ std::ostream&	matrix::operator<<(std::ostream& os, const vec3& vector)
 	return os;
 }
 
-matrix::vec3	matrix::fromHomogeneous(const vec4& vector)
+matrix::vec3	matrix::vec3::fromHomogeneous(const vec4& vector)
 {
 	vec3	res(vector);
 
@@ -308,15 +308,4 @@ matrix::vec3	matrix::reflect(const vec3& vector, const vec3& normal)
 	vec3	normalizedNormal = normalize(normal);
 
 	return vector - 2 * dot(vector, normalizedNormal) * normalizedNormal;
-}
-
-matrix::vec3	matrix::lerp(const vec3&a, const vec3& b, float t)
-{
-	vec3	res;
-
-	res.x = a.x + t * (b.x - a.x);
-	res.y = a.y + t * (b.y - a.y);
-	res.z = a.z + t * (b.z - a.z);
-
-	return res;
 }

@@ -114,7 +114,7 @@ matrix::mat2&	matrix::mat2::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::mat2	matrix::operator*(const float scalar, const mat2& rhs)
+matrix::mat2	operator*(const float scalar, const matrix::mat2& rhs)
 {
 	return rhs * scalar;
 }
@@ -175,6 +175,20 @@ void	matrix::mat2::transpose(void)
 	this->data[1] = tmp.data[2];  this->data[3] = tmp.data[3];
 }
 
+void	matrix::mat2::normalize(void)
+{
+	vec2	c0(this->data[0], this->data[1]);
+	c0.normalize();
+
+	vec2	c1(this->data[2], this->data[3]);
+	float	dotLen = dot(c0, c1);
+	c1 = c1 - dotLen * c0;
+	c1.normalize();
+
+	this->data[0] = c0.x;	this->data[2] = c1.x;
+	this->data[1] = c0.y;	this->data[3] = c1.y;
+}
+
 std::ostream&	matrix::operator<<(std::ostream& os, const mat2& matrice)
 {
 	os << "/ " << matrice.data[0] << " " << matrice.data[2] << " \\" << std::endl;
@@ -192,6 +206,14 @@ void	matrix::identity(mat2& matrice)
 float	matrix::determinant(const mat2& matrice)
 {
 	return matrice.data[0] * matrice.data[3] - matrice.data[2] * matrice.data[1];
+}
+
+matrix::mat2	matrix::normalize(const mat2& matrice)
+{
+	mat2	res = matrice;
+	res.normalize();
+
+	return res;
 }
 
 matrix::mat2	matrix::invert(const mat2& matrice)

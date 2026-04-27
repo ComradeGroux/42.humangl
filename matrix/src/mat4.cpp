@@ -151,7 +151,7 @@ matrix::mat4&	matrix::mat4::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::mat4	matrix::operator*(const float scalar, const mat4& rhs)
+matrix::mat4	operator*(const float scalar, const matrix::mat4& rhs)
 {
 	return rhs * scalar;
 }
@@ -221,6 +221,28 @@ void	matrix::mat4::scale(const vec3& vector)
 	this->data[2] *= vector.x;  this->data[6] *= vector.y; this->data[10] *= vector.z;
 }
 
+void	matrix::mat4::normalize(void)
+{
+	vec3	c0(this->data[0], this->data[1], this->data[2]);
+	c0.normalize();
+
+	vec3	c1(this->data[4], this->data[5], this->data[6]);
+	float	dotLen = dot(c0, c1);
+	c1 = c1 - dotLen * c0;
+	c1.normalize();
+
+	vec3	c2 = cross(c0, c1);
+	this->data[0] = c0.x; this->data[4] = c1.x;  this->data[8] = c2.x;
+	this->data[1] = c0.y; this->data[5] = c1.y;  this->data[9] = c2.y;
+	this->data[2] = c0.z; this->data[6] = c1.z; this->data[10] = c2.z;
+}
+
+matrix::quaternion	matrix::mat4::toQuat(void) const
+{
+	// return quaternion(this->data[0], this->data[1], this->data[2], this->data[3]);
+	// TODO REAL IMPLEMENTATION -> check Shepperd method
+}
+
 std::ostream&	matrix::operator<<(std::ostream& os, const mat4& matrice)
 {
 	os << "/ " << matrice.data[0] << " " << matrice.data[4] << " " << matrice.data[8] << " " << matrice.data[12] << " \\" << std::endl;
@@ -281,6 +303,14 @@ static float	mat4_det_fast(float s[6], float c[6])
 	det += s[5] * c[0];
 
 	return det;
+}
+
+matrix::mat4	matrix::normalize(const mat4& matrice)
+{
+	mat4	res = matrice;
+	res.normalize();
+
+	return res;
 }
 
 matrix::mat4	matrix::invert(const mat4& matrice)
