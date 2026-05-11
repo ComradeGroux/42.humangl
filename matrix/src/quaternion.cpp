@@ -195,15 +195,23 @@ void	matrix::quaternion::normalize(void)
 
 matrix::mat4	matrix::quaternion::toMat4(void) const
 {
-	// TODO IMPLEMENT REAL quaternion TO matrix4x4
-	// mat4	res;
+	mat4	res;
 
-	// res.data[0] = h;	res.data[4] = -i;	res.data[8] = -j; res.data[12] = -k;
-	// res.data[1] = i;	res.data[5] = h;	res.data[9] = -k; res.data[13] = j;
-	// res.data[2] = j;	res.data[6] = k;   res.data[10] = h;  res.data[14] = -i;
-	// res.data[3] = k;	res.data[7] = -j;  res.data[11] = i;  res.data[15] = h;
+	res.data[0] = this->h * this->h + this->i * this->i - this->j * this->j - this->k * this->k;
+	res.data[1] = 2 * (this->i * this->j + this->h * this->k);
+	res.data[2] = 2 * (this->i * this->k - this->h * this->j);
 
-	// return res;
+	res.data[4] = 2 * (this->i * this->j - this->h * this->k);
+	res.data[5] = this->h * this->h - this->i * this->i + this->j * this->j - this->k * this->k;
+	res.data[6] = 2 * (this->j * this->k + this->h * this->i);
+
+	res.data[8]  = 2 * (this->i * this->k + this->h * this->j);
+	res.data[9]  = 2 * (this->j * this->k - this->h * this->i);
+	res.data[10] = this->h * this->h - this->i * this->i - this->j * this->j + this->k * this->k;
+
+	res.data[15] = 1.0f;
+
+	return res;
 }
 
 std::ostream&	matrix::operator<<(std::ostream& os, const quaternion& rhs)
