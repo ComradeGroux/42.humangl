@@ -239,8 +239,56 @@ void	matrix::mat4::normalize(void)
 
 matrix::quaternion	matrix::mat4::toQuat(void) const
 {
-	// return quaternion(this->data[0], this->data[1], this->data[2], this->data[3]);
-	// TODO REAL IMPLEMENTATION -> check Shepperd method
+	float		trace = this->data[0] + this->data[5] + this->data[10];
+	float		S = 1.0f;
+	quaternion	res;
+
+	if (trace > 0.0f)
+	{
+		S = std::sqrt(trace + 1.0f) * 2.0f;
+		if (std::fabs(S) < 1e-6f)
+			return quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+
+		res.h = 0.25f * S;
+		res.i = (this->data[6] - this->data[9]) / S;
+		res.j = (this->data[8] - this->data[2]) / S;
+		res.k = (this->data[1] - this->data[4]) / S;
+	}
+	else if (this->data[0] > this->data[5] && this->data[0] > this->data[10])
+	{
+		S = std::sqrt(1.0f + this->data[0] - this->data[5] - this->data[10]) * 2.0f;
+		if (std::fabs(S) < 1e-6f)
+			return quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+
+		res.h = (this->data[6] - this->data[6]) / S;
+		res.i = 0.25f * S;
+		res.j = (this->data[1] + this->data[4]) / S;
+		res.k = (this->data[8] + this->data[2]) / S;
+	}
+	else if (this->data[5] > this->data[10])
+	{
+		S = std::sqrt(1.0f + this->data[5] - this->data[0] - this->data[10]) * 2.0f;
+		if (std::fabs(S) < 1e-6f)
+			return quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+
+		res.h = (this->data[8] - this->data[2]) / S;
+		res.i = (this->data[1] + this->data[4]) / S;
+		res.j = 0.25f * S;
+		res.k = (this->data[9] + this->data[6]) / S;
+	}
+	else
+	{
+		S = std::sqrt(1.0f + this->data[10] - this->data[0] - this->data[5]) * 2.0f;
+		if (std::fabs(S) < 1e-6f)
+			return quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+
+		res.h = (this->data[1] - this->data[4]) / S;
+		res.i = (this->data[8] + this->data[2]) / S;
+		res.j = (this->data[6] + this->data[9]) / S;
+		res.k = 0.25f * S;
+	}
+
+	return res;
 }
 
 std::ostream&	matrix::operator<<(std::ostream& os, const mat4& matrice)
