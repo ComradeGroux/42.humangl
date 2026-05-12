@@ -260,7 +260,7 @@ matrix::quaternion	matrix::mat4::toQuat(void) const
 		if (std::fabs(S) < 1e-6f)
 			return quaternion(1.0f, 0.0f, 0.0f, 0.0f);
 
-		res.h = (this->data[6] - this->data[6]) / S;
+		res.h = (this->data[6] - this->data[9]) / S;
 		res.i = 0.25f * S;
 		res.j = (this->data[1] + this->data[4]) / S;
 		res.k = (this->data[8] + this->data[2]) / S;
