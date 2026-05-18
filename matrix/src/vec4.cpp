@@ -133,9 +133,12 @@ matrix::vec4&	matrix::vec4::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::vec4	operator*(const float scalar, const matrix::vec4& rhs)
+namespace matrix
 {
-	return rhs * scalar;
+	matrix::vec4	operator*(const float scalar, const matrix::vec4& rhs)
+	{
+		return rhs * scalar;
+	}
 }
 
 matrix::vec4	matrix::vec4::operator/(const vec4& rhs) const

@@ -1,7 +1,7 @@
 #include "glad/glad.h"
 #include "opengl_error.h"
 
-#include "init.h"
+#include "init.hpp"
 
 #include <stdexcept>
 #include <iostream>
@@ -95,26 +95,28 @@ void	clearOpenGLInstance(GLFWwindow *window)
 
 BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 {
+	BoneNode*	root = new BoneNode(nullptr);
 	BoneNode*	head = new BoneNode(drawFunc);
-	BoneNode*	torso = new BoneNode(drawFunc);
+	BoneNode*	chest = new BoneNode(drawFunc);
 	BoneNode*	upperArmLeft = new BoneNode(drawFunc);
-	BoneNode*	foreArmLeft = new BoneNode(drawFunc);
+	BoneNode*	lowerArmLeft = new BoneNode(drawFunc);
 	BoneNode*	upperArmRight = new BoneNode(drawFunc);
-	BoneNode*	foreArmRight = new BoneNode(drawFunc);
+	BoneNode*	lowerArmRight = new BoneNode(drawFunc);
 	BoneNode*	upperLegLeft = new BoneNode(drawFunc);
 	BoneNode*	lowerLegLeft = new BoneNode(drawFunc);
 	BoneNode*	upperLegRight = new BoneNode(drawFunc);
 	BoneNode*	lowerLegRight = new BoneNode(drawFunc);
 
-	torso->addChild(head);
-	torso->addChild(upperArmLeft);
-	upperArmLeft->addChild(foreArmLeft);
-	torso->addChild(upperArmRight);
-	upperArmRight->addChild(foreArmRight);
-	torso->addChild(upperLegLeft);
-	upperLegLeft->addChild(lowerLegLeft);
-	torso->addChild(upperLegRight);
-	upperLegRight->addChild(lowerLegRight);
+	root->addChild(BoneNode::body_part::CHEST, chest);
+	chest->addChild(BoneNode::body_part::HEAD, head);
+	chest->addChild(BoneNode::body_part::UPPER_ARM_LEFT, upperArmLeft);
+	upperArmLeft->addChild(BoneNode::body_part::LOWER_ARM_LEFT, lowerArmLeft);
+	chest->addChild(BoneNode::body_part::UPPER_ARM_RIGHT, upperArmRight);
+	upperArmRight->addChild(BoneNode::body_part::LOWER_ARM_RIGHT, lowerArmRight);
+	chest->addChild(BoneNode::body_part::UPPER_LEG_LEFT, upperLegLeft);
+	upperLegLeft->addChild(BoneNode::body_part::LOWER_LEG_LEFT, lowerLegLeft);
+	chest->addChild(BoneNode::body_part::UPPER_LEG_RIGHT, upperLegRight);
+	upperLegRight->addChild(BoneNode::body_part::LOWER_LEG_RIGHT, lowerLegRight);
 
-	return torso;
+	return root;
 }

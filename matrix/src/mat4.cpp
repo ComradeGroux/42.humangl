@@ -151,9 +151,11 @@ matrix::mat4&	matrix::mat4::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::mat4	operator*(const float scalar, const matrix::mat4& rhs)
-{
-	return rhs * scalar;
+namespace matrix {
+	mat4	operator*(const float scalar, const matrix::mat4& rhs)
+	{
+		return rhs * scalar;
+	}
 }
 
 matrix::mat4	matrix::mat4::operator/(const mat4& rhs) const

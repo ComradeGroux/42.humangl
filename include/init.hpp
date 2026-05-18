@@ -5,8 +5,7 @@
 #include "matrix.hpp"
 #include "BoneNode.hpp"
 
-BoneNode*	allocateHuman(std::function<void (const matrix::mat4&)> drawFunc);
-void		deleteHuman(BoneNode* torso);
+BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc);
 
 GLFWwindow*	createWindow(void);
 void		clearOpenGLInstance(GLFWwindow *window);

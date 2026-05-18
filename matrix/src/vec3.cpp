@@ -127,9 +127,12 @@ matrix::vec3&	matrix::vec3::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::vec3	operator*(const float scalar, const matrix::vec3& rhs)
+namespace matrix
 {
-	return rhs * scalar;
+	matrix::vec3	operator*(const float scalar, const matrix::vec3& rhs)
+	{
+		return rhs * scalar;
+	}
 }
 
 matrix::vec3	matrix::vec3::operator/(const vec3& rhs) const

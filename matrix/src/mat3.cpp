@@ -132,9 +132,12 @@ matrix::mat3&	matrix::mat3::operator*=(const float scalar)
 	return *this;
 }
 
-matrix::mat3	operator*(const float scalar, const matrix::mat3& rhs)
+namespace matrix
 {
-	return rhs * scalar;
+	mat3	operator*(const float scalar, const matrix::mat3& rhs)
+	{
+		return rhs * scalar;
+	}
 }
 
 matrix::mat3	matrix::mat3::operator/(const mat3& rhs) const
