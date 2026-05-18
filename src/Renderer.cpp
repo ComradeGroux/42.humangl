@@ -146,7 +146,8 @@ void	Renderer::_createVaoVboEbo(void)
 
 void	Renderer::draw(const matrix::mat4& matrice)
 {
-	(void)matrice;
+	cgl(glUseProgram(_shader));
+	cgl(glUniformMatrix4fv(glGetUniformLocation(_shader, "uMVP_matrix"), 1, GL_FALSE, matrice.data));
 
 	cgl(glBindVertexArray(_vao));
 	cgl(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0));
