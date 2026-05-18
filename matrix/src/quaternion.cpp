@@ -193,6 +193,25 @@ void	matrix::quaternion::normalize(void)
 	this->k = this->k / norm;	
 }
 
+matrix::mat3	matrix::quaternion::toMat3(void) const
+{
+	mat3	res;
+
+	res.data[0] = this->h * this->h + this->i * this->i - this->j * this->j - this->k * this->k;
+	res.data[1] = 2 * (this->i * this->j + this->h * this->k);
+	res.data[2] = 2 * (this->i * this->k - this->h * this->j);
+
+	res.data[3] = 2 * (this->i * this->j - this->h * this->k);
+	res.data[4] = this->h * this->h - this->i * this->i + this->j * this->j - this->k * this->k;
+	res.data[5] = 2 * (this->j * this->k + this->h * this->i);
+
+	res.data[6]  = 2 * (this->i * this->k + this->h * this->j);
+	res.data[7]  = 2 * (this->j * this->k - this->h * this->i);
+	res.data[8] = this->h * this->h - this->i * this->i - this->j * this->j + this->k * this->k;
+
+	return res;
+}
+
 matrix::mat4	matrix::quaternion::toMat4(void) const
 {
 	mat4	res;

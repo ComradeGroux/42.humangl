@@ -22,13 +22,14 @@ class BoneNode {
 		};
 
 	private:
+		matrix::mat4								_localTransform;
 		std::map<body_part, BoneNode *>				_children;
 		std::function<void (const matrix::mat4&)>	_drawFunc;
 
 		void	_render(MatrixStack& stack);
 
 	public:
-		matrix::mat4	localTransform;
+		matrix::mat4	animatedTransform;
 
 		BoneNode(std::function<void (const matrix::mat4&)> f);
 		BoneNode(std::function<void (const matrix::mat4&)> f, matrix::mat4 transform);
@@ -38,4 +39,6 @@ class BoneNode {
 		void	clearAndFreeChildren(void);
 
 		void	render(void);
+
+		BoneNode*	getBone(body_part bone);
 };

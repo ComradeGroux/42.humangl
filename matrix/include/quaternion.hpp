@@ -46,10 +46,11 @@ namespace matrix {
 		float	norme(void) const;
 		void	normalize(void);
 
+		mat3	toMat3(void) const;
 		mat4	toMat4(void) const;
 	};
 	std::ostream&	operator<<(std::ostream& os, const quaternion& rhs);
-	quaternion	operator*(const float scalar, const quaternion& rhs);
+	quaternion		operator*(const float scalar, const quaternion& rhs);
 
 	quaternion	inverse(const quaternion& quat);
 	quaternion	conjuge(const quaternion& quat);

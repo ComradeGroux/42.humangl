@@ -163,3 +163,13 @@ matrix::mat4	matrix::ortho(float left, float right, float bottom, float top, flo
 
 	return orth;
 }
+
+matrix::mat4	matrix::compose(vec3 translation, quaternion rotation, vec3 scale)
+{
+	mat4	res;
+
+	matrix::identity(res);
+	res = translate(res, translation);
+
+	return matrix::scale(res * rotation.toMat4(), scale);
+}

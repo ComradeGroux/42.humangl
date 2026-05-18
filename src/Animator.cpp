@@ -1,8 +1,10 @@
 #include "Animator.hpp"
+#include "lerp.hpp"
 
 Animator::Animator(BoneNode* model): _model(model)
 {
 	_createAnimations();
+	_currKeyframe = _animationsFrames[ANIM_IDLE].begin();
 }
 
 void	Animator::_createAnimations(void)
@@ -29,12 +31,32 @@ void	Animator::renderAnimation(double deltaTime)
 	{
 		_currKeyframe++;
 		if (_currKeyframe == _animationsFrames[_animation].end())
-			chooseAnimation(_animation);
+		_currKeyframe = _animationsFrames[_animation].begin();
+		_timeInKeyframe -= (*_currKeyframe).duration;
 	}
 
-	/**
-	 * TODO -> RENDER ANIMATION
-	 */
+	matrix::vec3		pos;
+	matrix::vec3		scale;
+	matrix::quaternion	rot;
+	double				t = _timeInKeyframe / (*_currKeyframe).duration;
+	for (std::pair<BoneNode::body_part, AnimNode> curr : (*_currKeyframe).movement)
+	{
+		std::list<KeyFrame>::iterator	nextFrame = _currKeyframe;
+		if (++nextFrame == _animationsFrames[_animation].end())
+			nextFrame = _animationsFrames[_animation].begin();
+
+		pos = matrix::lerp(curr.second.pos, (*nextFrame).movement[curr.first].pos, t);
+		scale = matrix::lerp(curr.second.scaling, (*nextFrame).movement[curr.first].scaling, t);
+		rot = matrix::slerp(curr.second.rotation, (*nextFrame).movement[curr.first].rotation, t);
+
+		BoneNode*	currBone = _model->getBone(curr.first);
+		if (currBone == nullptr)
+			throw std::runtime_error("Bone does not exist !");
+
+		currBone->animatedTransform = matrix::compose(pos, rot, scale);
+	}
+
+	_model->render();
 }
 
 void	Animator::renderAnimation(BoneNode* model, AnimationType animation, double deltaTime)

@@ -1,5 +1,6 @@
 #include "glad/glad.h"
 #include "opengl_error.h"
+#include "ANSI-color-codes.h"
 
 #include "init.hpp"
 
@@ -23,21 +24,25 @@ static void	debug_cb(GLenum source, GLenum type, GLuint id, GLenum severity, GLs
 		return;
 
 	const char* severityStr = "UNKNOWN";
+	std::string	color = WHT;
 	switch (severity)
 	{
 		case GL_DEBUG_SEVERITY_HIGH:
 			severityStr = "HIGH";
+			color = REDB;
 			break;
 		case GL_DEBUG_SEVERITY_MEDIUM:
 			severityStr = "MEDIUM";
+			color = RED;
 			break;
 		case GL_DEBUG_SEVERITY_LOW:
 			severityStr = "LOW";
+			color = YEL;
 			break;
 		default:
 			break;
 	}
-	std::cerr << "OpenGL [" << severityStr << "]: " << message << std::endl;
+	std::cerr << color << "OpenGL [" << severityStr << "]" << CRESET << ": " << message << std::endl;
 }
 
 static void	key_cb(GLFWwindow* window, int key, int scancode, int action, int mods)

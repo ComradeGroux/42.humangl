@@ -1,9 +1,15 @@
 #include "opengl_error.h"
 
-
-#include "init.h"
+#include "init.hpp"
+#include "matrix.hpp"
+#include "Animator.hpp"
 
 #include <iostream>
+
+void	drawBone(const matrix::mat4& matrice)
+{
+	(void)matrice;
+}
 
 int	main(int argc, char **argv)
 {
@@ -11,9 +17,11 @@ int	main(int argc, char **argv)
 	(void)argv;
 
 	GLFWwindow*	window;
+	BoneNode*	human;
 	try
 	{
 		window = createWindow();
+		human = createHuman(drawBone);
 	}
 	catch (std::exception& e)
 	{
@@ -21,6 +29,10 @@ int	main(int argc, char **argv)
 		return 1;
 	}
 
+	Animator	animator(human);
+	animator.renderAnimation(0.0f);
+
+	(void)window;
 	int	width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	cgl(glViewport(0, 0, width, height));
@@ -32,5 +44,7 @@ int	main(int argc, char **argv)
 	}
 
 	clearOpenGLInstance(window);
+
+	delete human;
 	return 0;
 }
