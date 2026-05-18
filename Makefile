@@ -13,7 +13,8 @@ BUILD_DIR   := build
 OBJS_DIR    := $(BUILD_DIR)/objs
 DEPS_DIR    := lib
 
-SRCS	:= $(wildcard $(SRC_DIR)/*.cpp)
+SRCS	:= $(wildcard $(SRC_DIR)/*.cpp) \
+		   $(wildcard $(SRC_DIR)/Animations/*.cpp)
 VPATH	:= $(dir $(SRCS))
 OBJS	:= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 
