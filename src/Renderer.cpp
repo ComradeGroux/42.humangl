@@ -5,13 +5,13 @@
 #include <sstream>
 #include <iostream>
 
-Renderer::Renderer(void)
+Renderer::Renderer(Camera& camera) : _cam(camera)
 {
 	_createVaoVboEbo();
 	_isLoaded = false;
 }
 
-Renderer::Renderer(const char* vertexPath, const char* fragmentPath)
+Renderer::Renderer(Camera& camera, const char* vertexPath, const char* fragmentPath) : _cam(camera)
 {
 	_createVaoVboEbo();
 	_createShader(vertexPath, fragmentPath);
@@ -172,9 +172,25 @@ void	Renderer::draw(const matrix::mat4& matrice)
 		throw std::runtime_error("There isn't any shader !");
 
 	cgl(glUseProgram(_shader));
-	cgl(glUniformMatrix4fv(glGetUniformLocation(_shader, "uMVP_matrix"), 1, GL_FALSE, matrice.data));
+
+	cgl(glUniformMatrix4fv(glGetUniformLocation(_shader, "uMatrix"), 1, GL_FALSE, matrice.data));
 
 	cgl(glBindVertexArray(_vao));
 	cgl(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0));
 	cgl(glBindVertexArray(0));
+
+	cgl(glUseProgram(0));
+}
+
+void	Renderer::setViewProjectionUniform(float aspectRatio)
+{
+	setUniformMat4("uView", _cam.getViewMatrix());
+	setUniformMat4("uProjection", _cam.getProjectionMatrix(aspectRatio));
+}
+
+inline void	Renderer::setUniformMat4(const char* name, const matrix::mat4& matrice)
+{
+	cgl(glUseProgram(_shader));
+	cgl(glUniformMatrix4fv(glGetUniformLocation(_shader, name), 1, GL_FALSE, matrice.data));
+	cgl(glUseProgram(0));
 }

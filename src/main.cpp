@@ -7,15 +7,19 @@
 
 #include <iostream>
 
-static void	mainLoop(GLFWwindow* window, Animator& anim)
+static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim)
 {
-	int	width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	cgl(glViewport(0, 0, width, height));
+	int		width, height;
+	float	aspectRatio;
 	while (!glfwWindowShouldClose(window))
 	{
+		glfwGetFramebufferSize(window, &width, &height);
+		aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+
 		glfwPollEvents();
 
+		cgl(glClearColor(0.529f, 0.808f, 0.922f, 1.0f));
+		renderer.setViewProjectionUniform(aspectRatio);
 		anim.renderAnimation(0.2f);
 
 		glfwSwapBuffers(window);
@@ -25,12 +29,13 @@ static void	mainLoop(GLFWwindow* window, Animator& anim)
 static int	inOpenGLContext(GLFWwindow* window)
 {
 	BoneNode*	human;
-	Renderer	renderer("shader/basic.vert", "shader/basic.frag");
+	Camera		camera(matrix::vec3(0.0f, 0.0f, -0.5f), 0.0f, 0.0f);
+	Renderer	renderer(camera, "shader/basic.vert", "shader/basic.frag");
 	try
 	{
 		human = createHuman([&renderer](const matrix::mat4& mat) { renderer.draw(mat); });
 		Animator	animator(human);
-		mainLoop(window, animator);
+		mainLoop(window, renderer, animator);
 	}
 	catch (std::exception& e)
 	{
