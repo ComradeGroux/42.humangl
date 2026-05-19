@@ -12,13 +12,16 @@ class Renderer {
 		void	_createVaoVboEbo(void);
 
 		GLuint	_shader;
+		bool	_isLoaded;
 		void	_createShader(const char* vertexPath, const char* fragmentPath);
 		GLuint	_compileShader(const char* path, GLenum type) const;
 		void	_checkShaderCompilation(GLuint shader, bool isProgram) const;
 
 	public:
+		Renderer(void);
 		Renderer(const char* vertexPath, const char* fragmentPath);
 		~Renderer(void);
 
+		void	loadShader(const char* vertexPath, const char* fragmentPath);
 		void	draw(const matrix::mat4& matrice);
 };

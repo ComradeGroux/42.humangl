@@ -1,10 +1,16 @@
 #include "Animator.hpp"
 #include "lerp.hpp"
 
+Animator::Animator(void)
+{
+	_createAnimations();
+	chooseAnimation(ANIM_IDLE);
+}
+
 Animator::Animator(BoneNode* model): _model(model)
 {
 	_createAnimations();
-	_currKeyframe = _animationsFrames[ANIM_IDLE].begin();
+	chooseAnimation(ANIM_IDLE);
 }
 
 void	Animator::_createAnimations(void)
@@ -12,6 +18,11 @@ void	Animator::_createAnimations(void)
 	_animationsFrames[ANIM_IDLE] = _createIdle();
 	_animationsFrames[ANIM_WALK] = _createWalk();
 	_animationsFrames[ANIM_JUMP] = _createJump();
+}
+
+void	Animator::loadModel(BoneNode* model)
+{
+	_model = model;
 }
 
 void	Animator::chooseAnimation(AnimationType animation)

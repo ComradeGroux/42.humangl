@@ -40,7 +40,10 @@ class Animator {
 		std::list<KeyFrame>	_createJump(void);
 
 	public:
+		Animator(void);
 		Animator(BoneNode* model);
+
+		void	loadModel(BoneNode* model);
 		void	chooseAnimation(AnimationType animation);
 		void	renderAnimation(double deltaTime);
 		void	renderAnimation(BoneNode* model, AnimationType animation, double deltaTime);

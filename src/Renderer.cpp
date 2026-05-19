@@ -5,18 +5,39 @@
 #include <sstream>
 #include <iostream>
 
+Renderer::Renderer(void)
+{
+	_createVaoVboEbo();
+	_isLoaded = false;
+}
+
 Renderer::Renderer(const char* vertexPath, const char* fragmentPath)
 {
-	_createShader(vertexPath, fragmentPath);
 	_createVaoVboEbo();
+	_createShader(vertexPath, fragmentPath);
+	_isLoaded = true;
 }
 
 Renderer::~Renderer(void)
 {
-	cgl(glDeleteProgram(_shader));
+	if (_isLoaded)
+	{
+		cgl(glDeleteProgram(_shader));
+	}
 	cgl(glDeleteVertexArrays(1, &_vao));
 	cgl(glDeleteBuffers(1, &_vbo));
 	cgl(glDeleteBuffers(1, &_ebo));
+}
+
+void	Renderer::loadShader(const char* vertexPath, const char* fragmentPath)
+{
+	if (_isLoaded)
+	{
+		cgl(glDeleteProgram(_shader));
+	}
+
+	_createShader(vertexPath, fragmentPath);
+	_isLoaded = true;
 }
 
 void	Renderer::_createShader(const char* vertexPath, const char* fragmentPath)
@@ -49,7 +70,8 @@ GLuint	Renderer::_compileShader(const char* path, GLenum type) const
 
 	std::stringstream	buffer;
 	buffer << file.rdbuf();
-	const char*	src = buffer.str().c_str();
+	std::string	tmp = buffer.str();
+	const char*	src = tmp.c_str();
 
 	GLuint	shader = glCreateShader(type);
 	cgl(glShaderSource(shader, 1, &src, nullptr));
@@ -146,6 +168,9 @@ void	Renderer::_createVaoVboEbo(void)
 
 void	Renderer::draw(const matrix::mat4& matrice)
 {
+	if (!_isLoaded)
+		throw std::runtime_error("There isn't any shader !");
+
 	cgl(glUseProgram(_shader));
 	cgl(glUniformMatrix4fv(glGetUniformLocation(_shader, "uMVP_matrix"), 1, GL_FALSE, matrice.data));
 

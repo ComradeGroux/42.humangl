@@ -3,36 +3,12 @@
 #include "init.hpp"
 #include "matrix.hpp"
 #include "Animator.hpp"
+#include "Renderer.hpp"
 
 #include <iostream>
 
-void	drawBone(const matrix::mat4& matrice)
+static void	mainLoop(GLFWwindow* window, Animator& anim)
 {
-	(void)matrice;
-}
-
-int	main(int argc, char **argv)
-{
-	(void)argc;
-	(void)argv;
-
-	GLFWwindow*	window;
-	BoneNode*	human;
-	try
-	{
-		window = createWindow();
-		human = createHuman(drawBone);
-	}
-	catch (std::exception& e)
-	{
-		std::cerr << e.what() << std::endl;
-		return 1;
-	}
-
-	Animator	animator(human);
-	animator.renderAnimation(0.0f);
-
-	(void)window;
 	int	width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	cgl(glViewport(0, 0, width, height));
@@ -40,11 +16,48 @@ int	main(int argc, char **argv)
 	{
 		glfwPollEvents();
 
+		anim.renderAnimation(0.2f);
+
 		glfwSwapBuffers(window);
 	}
+}
 
-	clearOpenGLInstance(window);
+static int	inOpenGLContext(GLFWwindow* window)
+{
+	BoneNode*	human;
+	Renderer	renderer("shader/basic.vert", "shader/basic.frag");
+	try
+	{
+		human = createHuman([&renderer](const matrix::mat4& mat) { renderer.draw(mat); });
+		Animator	animator(human);
+		mainLoop(window, animator);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
 
 	delete human;
+	return 0;
+}
+
+int	main(void)
+{
+	GLFWwindow*	window;
+	try
+	{
+		window = createWindow();
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
+
+	if (inOpenGLContext(window))
+		return 1;
+
+	clearOpenGLInstance(window);
 	return 0;
 }
