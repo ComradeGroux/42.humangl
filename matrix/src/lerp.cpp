@@ -1,6 +1,7 @@
 #include "lerp.hpp"
 
 #include <cmath>
+#include <algorithm>
 
 matrix::vec2	matrix::lerp(const vec2& a, const vec2& b, float t)
 {
@@ -87,7 +88,10 @@ matrix::vec2		matrix::slerp(const vec2& a, const vec2& b, float t)
 		d = -d;
 	}
 
-	float	q = std::acos(d);
+	float	q = std::acos(std::clamp(d, -1.0f, 1.0f));
+
+	if (std::fabs(d) < 1e-6f)
+		return normalize(lerp(a, tmpB, t));
 
 	vec2	tmpLHS = ((std::sin((1 - t) * q)) / std::sin(q)) * a;
 	vec2	tmpRHS = (std::sin(t * q) / std::sin(q)) * tmpB;
@@ -105,7 +109,10 @@ matrix::vec3		matrix::slerp(const vec3& a, const vec3& b, float t)
 		d = -d;
 	}
 
-	float	q = std::acos(d);
+	float	q = std::acos(std::clamp(d, -1.0f, 1.0f));
+
+	if (std::fabs(d) < 1e-6f)
+		return normalize(lerp(a, tmpB, t));
 
 	vec3	tmpLHS = ((std::sin((1 - t) * q)) / std::sin(q)) * a;
 	vec3	tmpRHS = (std::sin(t * q) / std::sin(q)) * tmpB;
@@ -123,7 +130,10 @@ matrix::vec4		matrix::slerp(const vec4& a, const vec4& b, float t)
 		d = -d;
 	}
 
-	float	q = std::acos(d);
+	float	q = std::acos(std::clamp(d, -1.0f, 1.0f));
+
+	if (std::fabs(d) < 1e-6f)
+		return normalize(lerp(a, tmpB, t));
 
 	vec4	tmpLHS = ((std::sin((1 - t) * q)) / std::sin(q)) * a;
 	vec4	tmpRHS = (std::sin(t * q) / std::sin(q)) * tmpB;
@@ -155,7 +165,11 @@ matrix::quaternion	matrix::slerp(const quaternion& a, const quaternion& b, float
 		d = -d;
 		tmp = -tmp;
 	}
-	d = std::acos(d);
+
+	d = std::acos(std::clamp(d, -1.0f, 1.0f));
+
+	if (std::fabs(d) < 1e-6f)
+		return normalize(lerp(a, tmp, t));
 
 	return (std::sin((1 - t) * d) / std::sin(d) * a) + (std::sin(t * d) / std::sin(d)) * b;
 }

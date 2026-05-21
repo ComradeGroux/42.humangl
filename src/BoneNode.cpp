@@ -2,9 +2,8 @@
 
 BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f) : _drawFunc(f)
 {
-	matrix::mat4	transform;
-	matrix::identity(transform);
-	_localTransform = transform;
+	matrix::identity(_localTransform);
+	matrix::identity(animatedTransform);
 }
 
 BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f, matrix::mat4 transform) : _localTransform(transform), _drawFunc(f)
