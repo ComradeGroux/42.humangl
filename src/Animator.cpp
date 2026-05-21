@@ -4,17 +4,18 @@
 Animator::Animator(void)
 {
 	_createAnimations();
-	chooseAnimation(ANIM_IDLE);
+	chooseAnimation(ANIM_TPOSE);
 }
 
 Animator::Animator(BoneNode* model): _model(model)
 {
 	_createAnimations();
-	chooseAnimation(ANIM_IDLE);
+	chooseAnimation(ANIM_TPOSE);
 }
 
 void	Animator::_createAnimations(void)
 {
+	_animationsFrames[ANIM_TPOSE] = _createTPose();
 	_animationsFrames[ANIM_IDLE] = _createIdle();
 	_animationsFrames[ANIM_WALK] = _createWalk();
 	_animationsFrames[ANIM_JUMP] = _createJump();
@@ -30,6 +31,11 @@ void	Animator::chooseAnimation(AnimationType animation)
 	_animation = animation;
 	_currKeyframe = _animationsFrames[_animation].begin();
 	_timeInKeyframe = 0.0f;
+}
+
+Animator::AnimationType	Animator::getActualAnimation(void) const
+{
+	return _animation;
 }
 
 void	Animator::renderAnimation(double deltaTime)

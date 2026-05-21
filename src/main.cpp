@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim)
+static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim, State& state)
 {
 	int		width, height;
 	float	aspectRatio;
@@ -19,14 +19,19 @@ static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim)
 
 		glfwGetFramebufferSize(window, &width, &height);
 		aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-
 		now = glfwGetTime();
 		deltaTime = now - lastTime;
 		lastTime = now;
 
 		glfwPollEvents();
 
-		renderer.setViewProjectionUniform(aspectRatio);
+		if (state.autorotate)
+			renderer.updateCam(deltaTime);
+		if (state.animation != anim.getActualAnimation())
+			anim.chooseAnimation(state.animation);
+
+		renderer.setProjectionUniform(aspectRatio);
+		renderer.setCenterUniform();
 		anim.renderAnimation(deltaTime);
 
 		glfwSwapBuffers(window);
@@ -36,13 +41,15 @@ static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim)
 static int	inOpenGLContext(GLFWwindow* window)
 {
 	BoneNode*	human;
-	Camera		camera(matrix::vec3(0.0f, 0.0f, 5.0f), -90.0f, 0.0f);
+	Camera 		camera(4.0f, 0.3f, 0.3f);
 	Renderer	renderer(camera, "shader/basic.vert", "shader/basic.frag");
+	State		state;
+	glfwSetWindowUserPointer(window, &state);
 	try
 	{
 		human = createHuman([&renderer](const matrix::mat4& mat) { renderer.draw(mat); });
 		Animator	animator(human);
-		mainLoop(window, renderer, animator);
+		mainLoop(window, renderer, animator, state);
 	}
 	catch (std::exception& e)
 	{

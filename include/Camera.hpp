@@ -12,14 +12,22 @@ class Camera {
 		float	_yaw;
 		float	_pitch;
 
+		float	_r;
+		float	_phi;
+		float	_theta;
+
 		float	_fov = 80.0f;
 
 		void	_updateVectors(void);
 
 	public:
 		Camera(matrix::vec3 position, float yaw, float pitch);
+		Camera(float r, float theta, float phi);
 		~Camera(void);
 
 		matrix::mat4	getProjectionMatrix(float aspectRatio) const;
 		matrix::mat4	getViewMatrix(void) const;
+		matrix::mat4	getViewCenterMatrix(void) const;
+
+		void	updateRotation(double deltaTime);
 };

@@ -28,6 +28,10 @@ class Renderer {
 		void	loadShader(const char* vertexPath, const char* fragmentPath);
 		void	draw(const matrix::mat4& matrice);
 
-		void		setViewProjectionUniform(float aspectRatio);
+		void		setViewUniform(void);
+		void		setCenterUniform(void);
+		void		setProjectionUniform(float aspectRatio);
 		inline void	setUniformMat4(const char* name, const matrix::mat4& matrice);
+
+		void	updateCam(double deltaTime);
 };

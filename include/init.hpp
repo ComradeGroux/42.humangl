@@ -4,6 +4,12 @@
 
 #include "matrix.hpp"
 #include "BoneNode.hpp"
+#include "Animator.hpp"
+
+struct State {
+	bool					autorotate = true;
+	Animator::AnimationType	animation = Animator::ANIM_IDLE;
+};
 
 BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc);
 

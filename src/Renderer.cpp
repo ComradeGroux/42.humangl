@@ -182,9 +182,18 @@ void	Renderer::draw(const matrix::mat4& matrice)
 	cgl(glUseProgram(0));
 }
 
-void	Renderer::setViewProjectionUniform(float aspectRatio)
+void	Renderer::setViewUniform(void)
 {
 	setUniformMat4("uView", _cam.getViewMatrix());
+}
+
+void	Renderer::setCenterUniform(void)
+{
+	setUniformMat4("uView", _cam.getViewCenterMatrix());
+}
+
+void	Renderer::setProjectionUniform(float aspectRatio)
+{
 	setUniformMat4("uProjection", _cam.getProjectionMatrix(aspectRatio));
 }
 
@@ -193,4 +202,9 @@ inline void	Renderer::setUniformMat4(const char* name, const matrix::mat4& matri
 	cgl(glUseProgram(_shader));
 	cgl(glUniformMatrix4fv(glGetUniformLocation(_shader, name), 1, GL_FALSE, matrice.data));
 	cgl(glUseProgram(0));
+}
+
+void	Renderer::updateCam(double deltaTime)
+{
+	_cam.updateRotation(deltaTime);
 }

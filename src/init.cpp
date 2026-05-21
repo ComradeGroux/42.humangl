@@ -50,8 +50,20 @@ static void	key_cb(GLFWwindow* window, int key, int scancode, int action, int mo
 	(void)scancode;
 	(void)mods;
 
+	State*	state = static_cast<State*>(glfwGetWindowUserPointer(window));
+
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	else if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+		state->animation = Animator::ANIM_IDLE;
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+		state->animation = Animator::ANIM_WALK;
+	else if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+		state->animation = Animator::ANIM_JUMP;
+	else if (key == GLFW_KEY_0 && action == GLFW_PRESS)
+		state->animation = Animator::ANIM_TPOSE;
+	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
+		state->autorotate = !(state->autorotate);
 }
 
 GLFWwindow*	createWindow(void)
@@ -100,17 +112,55 @@ void	clearOpenGLInstance(GLFWwindow *window)
 
 BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 {
-	BoneNode*	root = new BoneNode(nullptr);
-	BoneNode*	head = new BoneNode(drawFunc);
-	BoneNode*	chest = new BoneNode(drawFunc);
-	BoneNode*	upperArmLeft = new BoneNode(drawFunc);
-	BoneNode*	lowerArmLeft = new BoneNode(drawFunc);
-	BoneNode*	upperArmRight = new BoneNode(drawFunc);
-	BoneNode*	lowerArmRight = new BoneNode(drawFunc);
-	BoneNode*	upperLegLeft = new BoneNode(drawFunc);
-	BoneNode*	lowerLegLeft = new BoneNode(drawFunc);
-	BoneNode*	upperLegRight = new BoneNode(drawFunc);
-	BoneNode*	lowerLegRight = new BoneNode(drawFunc);
+	matrix::mat4	transform;
+	matrix::identity(transform);
+	BoneNode*		root = new BoneNode(nullptr, transform);
+
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {-0.25f, -0.5f, -0.35f});
+	transform.scale({0.5f, 1.0f, 0.7f});
+	BoneNode*		chest = new BoneNode(drawFunc, transform);
+
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {-0.05f, 1.0f, 0.125f});
+	transform.scale({1.1f, 0.55f, 0.785714286f});
+	BoneNode*		head = new BoneNode(drawFunc, transform);
+
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.15f, 0.5f, -0.3f});
+	transform.scale({0.7f, 0.5f, 0.3f});
+	BoneNode*		upperArmLeft = new BoneNode(drawFunc, transform);
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
+	transform.scale({1.0f, 1.0f, 1.0f});
+	BoneNode*		lowerArmLeft = new BoneNode(drawFunc, transform);
+
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.15f, 0.5f, 1.0f});
+	transform.scale({0.7f, 0.5f, 0.3f});
+	BoneNode*		upperArmRight = new BoneNode(drawFunc, transform);
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
+	transform.scale({1.0f, 1.0f, 1.0f});
+	BoneNode*		lowerArmRight = new BoneNode(drawFunc, transform);
+
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.15f, -0.5f, 0.0f});
+	transform.scale({0.7f, 0.5f, 0.3f});
+	BoneNode*		upperLegLeft = new BoneNode(drawFunc, transform);
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
+	transform.scale({1.0f, 1.0f, 1.0f});
+	BoneNode*		lowerLegLeft = new BoneNode(drawFunc, transform);
+
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.15f, -0.5f, 0.7f});
+	transform.scale({0.7f, 0.5f, 0.3f});
+	BoneNode*		upperLegRight = new BoneNode(drawFunc, transform);
+	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
+	transform.scale({1.0f, 1.0f, 1.0f});
+	BoneNode*		lowerLegRight = new BoneNode(drawFunc, transform);
 
 	root->addChild(BoneNode::body_part::CHEST, chest);
 	chest->addChild(BoneNode::body_part::HEAD, head);

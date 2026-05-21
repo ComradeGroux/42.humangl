@@ -17,6 +17,7 @@ struct AnimNode {
 class Animator {
 	public:
 		enum AnimationType {
+			ANIM_TPOSE,
 			ANIM_IDLE,
 			ANIM_WALK,
 			ANIM_JUMP
@@ -28,13 +29,14 @@ class Animator {
 
 	private:
 		BoneNode*										_model = nullptr;
-		AnimationType									_animation = ANIM_IDLE;
+		AnimationType									_animation;
 		std::map<AnimationType, std::list<KeyFrame>>	_animationsFrames;
 
 		std::list<KeyFrame>::iterator	_currKeyframe;
 		double							_timeInKeyframe;
 
 		void				_createAnimations(void);
+		std::list<KeyFrame>	_createTPose(void);
 		std::list<KeyFrame>	_createIdle(void);
 		std::list<KeyFrame>	_createWalk(void);
 		std::list<KeyFrame>	_createJump(void);
@@ -43,8 +45,9 @@ class Animator {
 		Animator(void);
 		Animator(BoneNode* model);
 
-		void	loadModel(BoneNode* model);
-		void	chooseAnimation(AnimationType animation);
-		void	renderAnimation(double deltaTime);
-		void	renderAnimation(BoneNode* model, AnimationType animation, double deltaTime);
+		void			loadModel(BoneNode* model);
+		void			chooseAnimation(AnimationType animation);
+		AnimationType	getActualAnimation(void) const;
+		void			renderAnimation(double deltaTime);
+		void			renderAnimation(BoneNode* model, AnimationType animation, double deltaTime);
 };
