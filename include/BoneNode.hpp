@@ -23,6 +23,7 @@ class BoneNode {
 
 	private:
 		matrix::mat4								_localTransform;
+		matrix::vec3								_scale;
 		std::map<body_part, BoneNode *>				_children;
 		std::function<void (const matrix::mat4&)>	_drawFunc;
 

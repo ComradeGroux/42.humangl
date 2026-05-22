@@ -3,11 +3,18 @@
 BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f) : _drawFunc(f)
 {
 	matrix::identity(_localTransform);
+	_scale = matrix::vec3(1.0f, 1.0f, 1.0f);
 	matrix::identity(animatedTransform);
 }
 
-BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f, matrix::mat4 transform) : _localTransform(transform), _drawFunc(f)
+BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f, matrix::mat4 transform)
 {
+	_drawFunc = f;
+	_scale = matrix::vec3(transform.data[0], transform.data[5], transform.data[10]);
+	transform.data[0] = 1.0f;
+	transform.data[5] = 1.0f;
+	transform.data[10] = 1.0f;
+	_localTransform = transform;
 	matrix::identity(animatedTransform);
 }
 
@@ -37,7 +44,7 @@ void	BoneNode::render(void)
 void	BoneNode::_render(MatrixStack& stack)
 {
 	stack.push();
-	stack.apply(_localTransform * animatedTransform);
+	stack.apply(matrix::scale(_localTransform * animatedTransform, _scale));
 
 	if (_drawFunc)
 		_drawFunc(stack.top());
