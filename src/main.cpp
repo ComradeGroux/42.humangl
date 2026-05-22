@@ -40,7 +40,7 @@ static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim, Sta
 
 static int	inOpenGLContext(GLFWwindow* window)
 {
-	BoneNode*	human;
+	BoneNode*	human = nullptr;
 	Camera 		camera(4.0f, 0.3f, 0.3f);
 	Renderer	renderer(camera, "shader/basic.vert", "shader/basic.frag");
 	State		state;
@@ -54,6 +54,8 @@ static int	inOpenGLContext(GLFWwindow* window)
 	catch (std::exception& e)
 	{
 		std::cerr << e.what() << std::endl;
+		if (human != nullptr)
+			delete human;
 		return 1;
 	}
 

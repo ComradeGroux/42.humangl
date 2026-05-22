@@ -48,17 +48,18 @@ void	Animator::renderAnimation(double deltaTime)
 	{
 		_currKeyframe++;
 		if (_currKeyframe == _animationsFrames[_animation].end())
-		_currKeyframe = _animationsFrames[_animation].begin();
+			_currKeyframe = _animationsFrames[_animation].begin();
 		_timeInKeyframe -= (*_currKeyframe).duration;
 	}
 
-	matrix::vec3		pos;
-	matrix::vec3		scale;
-	matrix::quaternion	rot;
-	double				t = _timeInKeyframe / (*_currKeyframe).duration;
+	matrix::vec3					pos;
+	matrix::vec3					scale;
+	matrix::quaternion				rot;
+	std::list<KeyFrame>::iterator	nextFrame;
+	double							t = _timeInKeyframe / (*_currKeyframe).duration;
 	for (std::pair<BoneNode::body_part, AnimNode> curr : (*_currKeyframe).movement)
 	{
-		std::list<KeyFrame>::iterator	nextFrame = _currKeyframe;
+		nextFrame = _currKeyframe;
 		if (++nextFrame == _animationsFrames[_animation].end())
 			nextFrame = _animationsFrames[_animation].begin();
 

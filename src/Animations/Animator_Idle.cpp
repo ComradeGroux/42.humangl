@@ -4,7 +4,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 {
 	return {
 		{
-			.duration = 1.0f,
+			.duration = 0.5f,
 			.movement = {
 				{
 					BoneNode::body_part::HEAD,
@@ -17,7 +17,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 				{
 					BoneNode::body_part::CHEST,
 					{
-						.pos = { 0.0f, 0.5f, 0.0f },
+						.pos = { 0.0f, 0.0f, 0.0f },
 						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
@@ -89,7 +89,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 			}
 		},
 		{
-			.duration = 1.0f,
+			.duration = 0.5f,
 			.movement = {
 				{
 					BoneNode::body_part::HEAD,
@@ -102,7 +102,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 				{
 					BoneNode::body_part::CHEST,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
+						.pos = { 0.0f, -0.1f, 0.0f },
 						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
@@ -142,32 +142,32 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 				{
 					BoneNode::body_part::UPPER_LEG_LEFT,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
+						.pos = { -0.2f, 0.0f, 0.0f },
+						.rotation = { 1.0f, 0.0f, 0.0f, -0.1f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
 					BoneNode::body_part::LOWER_LEG_LEFT,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
+						.pos = { 0.55f, 0.0f, 0.0f },
+						.rotation = { 1.0f, 0.0f, 0.0f, 0.2f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
 					BoneNode::body_part::UPPER_LEG_RIGHT,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
+						.pos = { -0.2f, 0.0f, 0.0f },
+						.rotation = { 1.0f, 0.0f, 0.0f, -0.1f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
 					BoneNode::body_part::LOWER_LEG_RIGHT,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
+						.pos = { 0.55f, 0.0f, 0.0f },
+						.rotation = { 1.0f, 0.0f, 0.0f, 0.2f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				}
