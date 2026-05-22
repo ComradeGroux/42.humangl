@@ -114,20 +114,21 @@ BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 {
 	matrix::mat4	transform;
 	matrix::identity(transform);
+	transform = matrix::translate(transform, {0.0f, 0.75f, 0.0f});
 	BoneNode*		root = new BoneNode(nullptr, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {-0.25f, -0.5f, -0.35f});
+	transform = matrix::translate(transform, {0.0f, 0.0f, 0.0f});
 	transform.scale({0.5f, 1.0f, 0.7f});
 	BoneNode*		chest = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {-0.05f, 1.0f, 0.125f});
+	transform = matrix::translate(transform, {0.0f, 0.76f, 0.0f});
 	transform.scale({1.1f, 0.55f, 0.785714286f});
 	BoneNode*		head = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.15f, 0.5f, -0.3f});
+	transform = matrix::translate(transform, {0.0f, 0.26f, -0.675f});
 	transform.scale({0.7f, 0.5f, 0.3f});
 	BoneNode*		upperArmLeft = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
@@ -136,7 +137,7 @@ BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 	BoneNode*		lowerArmLeft = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.15f, 0.5f, 1.0f});
+	transform = matrix::translate(transform, {0.0f, 0.26f, 0.675f});
 	transform.scale({0.7f, 0.5f, 0.3f});
 	BoneNode*		upperArmRight = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
@@ -145,7 +146,7 @@ BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 	BoneNode*		lowerArmRight = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.15f, -0.5f, 0.0f});
+	transform = matrix::translate(transform, {0.0f, -0.75f, -0.25f});
 	transform.scale({0.7f, 0.5f, 0.3f});
 	BoneNode*		upperLegLeft = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
@@ -154,7 +155,7 @@ BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 	BoneNode*		lowerLegLeft = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.15f, -0.5f, 0.7f});
+	transform = matrix::translate(transform, {0.0f, -0.75f, 0.25f});
 	transform.scale({0.7f, 0.5f, 0.3f});
 	BoneNode*		upperLegRight = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
