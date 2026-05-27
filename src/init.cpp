@@ -123,44 +123,44 @@ BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 	BoneNode*		chest = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, 0.76f, 0.0f});
-	transform.scale({1.1f, 0.55f, 0.785714286f});
+	transform = matrix::translate(transform, {0.0f, 0.775f, 0.0f});
+	transform.scale({0.55f, 0.55f, 0.55f});
 	BoneNode*		head = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, 0.26f, -0.675f});
-	transform.scale({0.7f, 0.5f, 0.3f});
+	transform = matrix::translate(transform, {0.0f, 0.25f, -0.5f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		upperArmLeft = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
-	transform.scale({1.0f, 1.0f, 1.0f});
+	transform = matrix::translate(transform, {0.0f, -0.5f, 0.0f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		lowerArmLeft = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, 0.26f, 0.675f});
-	transform.scale({0.7f, 0.5f, 0.3f});
+	transform = matrix::translate(transform, {0.0f, 0.25f, 0.5f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		upperArmRight = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
-	transform.scale({1.0f, 1.0f, 1.0f});
+	transform = matrix::translate(transform, {0.0f, -0.5f, 0.0f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		lowerArmRight = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, -0.75f, -0.25f});
-	transform.scale({0.7f, 0.5f, 0.3f});
+	transform = matrix::translate(transform, {0.0f, -0.75f, -0.2f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		upperLegLeft = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
-	transform.scale({1.0f, 1.0f, 1.0f});
+	transform = matrix::translate(transform, {0.0f, -0.5f, 0.0f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		lowerLegLeft = new BoneNode(drawFunc, transform);
 
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, -0.75f, 0.25f});
-	transform.scale({0.7f, 0.5f, 0.3f});
+	transform = matrix::translate(transform, {0.0f, -0.75f, 0.2f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		upperLegRight = new BoneNode(drawFunc, transform);
 	matrix::identity(transform);
-	transform = matrix::translate(transform, {0.0f, -1.0f, 0.0f});
-	transform.scale({1.0f, 1.0f, 1.0f});
+	transform = matrix::translate(transform, {0.0f, -0.5f, 0.0f});
+	transform.scale({0.35f, 0.5f, 0.3f});
 	BoneNode*		lowerLegRight = new BoneNode(drawFunc, transform);
 
 	root->addChild(BoneNode::body_part::CHEST, chest);

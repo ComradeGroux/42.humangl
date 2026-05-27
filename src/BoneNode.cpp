@@ -44,10 +44,10 @@ void	BoneNode::render(void)
 void	BoneNode::_render(MatrixStack& stack)
 {
 	stack.push();
-	stack.apply(matrix::scale(_localTransform * animatedTransform, _scale));
+	stack.apply(_localTransform * animatedTransform);
 
 	if (_drawFunc)
-		_drawFunc(stack.top());
+		_drawFunc(matrix::scale(stack.top(), _scale));
 
 	for (std::pair<body_part, BoneNode *> child : _children)
 		child.second->_render(stack);
