@@ -9,8 +9,8 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 				{
 					BoneNode::body_part::HEAD,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
+						.pos = {},
+						.rotation = {},
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -94,7 +94,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 				{
 					BoneNode::body_part::HEAD,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
+						.pos = {},
 						.rotation = { 1.0f, 0.0f, -0.025f, 0.0f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
@@ -103,7 +103,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 					BoneNode::body_part::CHEST,
 					{
 						.pos = { 0.0f, -0.1f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
+						.rotation = {},
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -179,7 +179,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 				{
 					BoneNode::body_part::HEAD,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
+						.pos = {},
 						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
@@ -264,7 +264,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 				{
 					BoneNode::body_part::HEAD,
 					{
-						.pos = { 0.0f, 0.0f, 0.0f },
+						.pos = {},
 						.rotation = { 1.0f, 0.0f, 0.025f, 0.0f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
@@ -273,7 +273,7 @@ std::list<Animator::KeyFrame>	Animator::_createIdle(void)
 					BoneNode::body_part::CHEST,
 					{
 						.pos = { 0.0f, -0.1f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.0f },
+						.rotation = {},
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},

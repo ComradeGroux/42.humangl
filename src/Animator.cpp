@@ -46,10 +46,13 @@ void	Animator::renderAnimation(double deltaTime)
 	_timeInKeyframe += deltaTime;
 	if (_timeInKeyframe >= (*_currKeyframe).duration)
 	{
-		_currKeyframe++;
-		if (_currKeyframe == _animationsFrames[_animation].end())
+		if (++_currKeyframe == _animationsFrames[_animation].end())
+		{
 			_currKeyframe = _animationsFrames[_animation].begin();
-		_timeInKeyframe -= (*_currKeyframe).duration;
+			_timeInKeyframe = 0.0f;
+		}
+		else
+			_timeInKeyframe -= (*_currKeyframe).duration;
 	}
 
 	matrix::vec3					pos;
