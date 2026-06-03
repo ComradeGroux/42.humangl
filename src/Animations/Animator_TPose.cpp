@@ -25,7 +25,7 @@ std::list<Animator::KeyFrame>	Animator::_createTPose(void)
 				{
 					BoneNode::body_part::UPPER_ARM_LEFT,
 					{
-						.pos = { 0.0f, 0.5f, -0.2f },
+						.pos = { 0.0f, 0.1f, -0.1f },
 						.rotation = { 1.0f, 1.0f, 0.0f, 0.0f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
@@ -41,7 +41,7 @@ std::list<Animator::KeyFrame>	Animator::_createTPose(void)
 				{
 					BoneNode::body_part::UPPER_ARM_RIGHT,
 					{
-						.pos = { 0.0f, 0.2f, 0.5f },
+						.pos = { 0.0f, 0.1f, 0.1f },
 						.rotation = { 1.0f, -1.0f, 0.0f, 0.0f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}

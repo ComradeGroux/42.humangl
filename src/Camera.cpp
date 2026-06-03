@@ -40,7 +40,7 @@ void	Camera::_updateVectors(void)
 
 matrix::mat4	Camera::getProjectionMatrix(float aspectRatio) const
 {
-	return matrix::perspective(_fov, aspectRatio, 0.1f, 100.0f);
+	return matrix::perspective(_fov, aspectRatio, 0.001f, 100.0f);
 }
 
 matrix::mat4	Camera::getViewMatrix(void) const

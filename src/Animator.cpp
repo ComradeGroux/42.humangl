@@ -1,6 +1,8 @@
 #include "Animator.hpp"
 #include "lerp.hpp"
 
+#include <iostream>
+
 Animator::Animator(void)
 {
 	_createAnimations();
@@ -43,8 +45,9 @@ void	Animator::renderAnimation(double deltaTime)
 	if (!_model)
 		throw std::runtime_error("You should provide a model before trying to animate something !");
 
+	std::list<KeyFrame>::iterator	nextFrame = _currKeyframe;
 	_timeInKeyframe += deltaTime;
-	if (_timeInKeyframe >= (*_currKeyframe).duration)
+	if (_timeInKeyframe >= (*nextFrame).duration)
 	{
 		if (++_currKeyframe == _animationsFrames[_animation].end())
 		{
@@ -52,20 +55,18 @@ void	Animator::renderAnimation(double deltaTime)
 			_timeInKeyframe = 0.0f;
 		}
 		else
-			_timeInKeyframe -= (*_currKeyframe).duration;
+			_timeInKeyframe -= (*nextFrame).duration;
 	}
 
-	matrix::vec3					pos;
-	matrix::vec3					scale;
-	matrix::quaternion				rot;
-	std::list<KeyFrame>::iterator	nextFrame;
-	double							t = _timeInKeyframe / (*_currKeyframe).duration;
+	double				t = _timeInKeyframe / (*nextFrame).duration;
+	matrix::vec3		pos;
+	matrix::vec3		scale;
+	matrix::quaternion	rot;
+	if (++nextFrame == _animationsFrames[_animation].end())
+		nextFrame = _animationsFrames[_animation].begin();
+
 	for (std::pair<BoneNode::body_part, AnimNode> curr : (*_currKeyframe).movement)
 	{
-		nextFrame = _currKeyframe;
-		if (++nextFrame == _animationsFrames[_animation].end())
-			nextFrame = _animationsFrames[_animation].begin();
-
 		pos = matrix::lerp(curr.second.pos, (*nextFrame).movement[curr.first].pos, t);
 		scale = matrix::lerp(curr.second.scaling, (*nextFrame).movement[curr.first].scaling, t);
 		rot = matrix::slerp(curr.second.rotation, (*nextFrame).movement[curr.first].rotation, t);

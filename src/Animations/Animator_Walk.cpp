@@ -4,14 +4,14 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 {
 	return {
 		{
-			.duration = 20.0f,
+			.duration = 0.5f,
 			.movement = {
 				{
 					BoneNode::body_part::HEAD,
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -19,7 +19,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -27,7 +27,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -35,7 +35,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -43,7 +43,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -51,7 +51,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -59,7 +59,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -67,7 +67,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -75,7 +75,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
@@ -83,7 +83,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					{
 						.pos = {},
 						.rotation = {},
-						.scaling = {}
+						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				}
 			}

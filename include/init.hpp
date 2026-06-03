@@ -8,7 +8,7 @@
 
 struct State {
 	bool					autorotate = true;
-	Animator::AnimationType	animation = Animator::ANIM_IDLE;
+	Animator::AnimationType	animation = Animator::ANIM_TPOSE;
 };
 
 BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc);
