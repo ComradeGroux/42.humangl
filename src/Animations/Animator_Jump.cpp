@@ -174,7 +174,7 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 			}
 		},
 		{	// Putting the arms up
-			.duration = 0.3f,
+			.duration = 0.2f,
 			.movement = {
 				{
 					BoneNode::body_part::HEAD,
@@ -259,7 +259,7 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 			}
 		},
 		{	// Extending the legs
-			.duration = 2.0f,
+			.duration = 0.4f,
 			.movement = {
 				{
 					BoneNode::body_part::HEAD,
@@ -281,7 +281,7 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 					BoneNode::body_part::UPPER_ARM_LEFT,
 					{
 						.pos = {},
-						.rotation = { 1.0f, 0.1f, 0.0f, 0.0f },
+						.rotation = { 1.0f, 0.1f, 0.0f, -0.4f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -297,7 +297,7 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 					BoneNode::body_part::UPPER_ARM_RIGHT,
 					{
 						.pos = {},
-						.rotation = { 1.0f, -0.1f, 0.0f, 0.0f },
+						.rotation = { 1.0f, -0.1f, 0.0f, -0.4f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -344,7 +344,7 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 			}
 		},
 		{	// Actually jumping
-			.duration = 3.0f,
+			.duration = 0.4f,
 			.movement = {
 				{
 					BoneNode::body_part::HEAD,
@@ -366,15 +366,15 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 					BoneNode::body_part::UPPER_ARM_LEFT,
 					{
 						.pos = {},
-						.rotation = {},
+						.rotation = { 1.0f, 0.0f, 0.0f, -0.8f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
 					BoneNode::body_part::LOWER_ARM_LEFT,
 					{
-						.pos = {},
-						.rotation = {},
+						.pos = { -0.2f, 0.1f, 0.0f },
+						.rotation = { 1.0f, 0.0f, 0.0f, -0.8f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -382,15 +382,15 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 					BoneNode::body_part::UPPER_ARM_RIGHT,
 					{
 						.pos = {},
-						.rotation = {},
+						.rotation = { 1.0f, 0.0f, 0.0f, -0.8f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
 				{
 					BoneNode::body_part::LOWER_ARM_RIGHT,
 					{
-						.pos = {},
-						.rotation = {},
+						.pos = { -0.2f, 0.1f, 0.0f },
+						.rotation = { 1.0f, 0.0f, 0.0f, -0.8f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -427,91 +427,6 @@ std::list<Animator::KeyFrame>	Animator::_createJump(void)
 					}
 				}
 			}
-		},/*
-		{
-			.duration = 1.0f,
-			.movement = {
-				{
-					BoneNode::body_part::HEAD,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::CHEST,
-					{
-						.pos = { 0.0f, 1.0f, 0.0f },
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::UPPER_ARM_LEFT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::LOWER_ARM_LEFT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::UPPER_ARM_RIGHT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::LOWER_ARM_RIGHT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::UPPER_LEG_LEFT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::LOWER_LEG_LEFT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::UPPER_LEG_RIGHT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				},
-				{
-					BoneNode::body_part::LOWER_LEG_RIGHT,
-					{
-						.pos = {},
-						.rotation = {},
-						.scaling = { 1.0f, 1.0f, 1.0f }
-					}
-				}
-			}
-		}*/
+		}
 	};
 }
