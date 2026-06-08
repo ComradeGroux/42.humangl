@@ -47,7 +47,7 @@ void	Animator::renderAnimation(double deltaTime)
 
 	std::list<KeyFrame>::iterator	nextFrame = _currKeyframe;
 	_timeInKeyframe += deltaTime;
-	if (_timeInKeyframe >= (*nextFrame).duration)
+	if (_timeInKeyframe >= _currKeyframe->duration)
 	{
 		if (++_currKeyframe == _animationsFrames[_animation].end())
 		{
@@ -55,21 +55,21 @@ void	Animator::renderAnimation(double deltaTime)
 			_timeInKeyframe = 0.0f;
 		}
 		else
-			_timeInKeyframe -= (*nextFrame).duration;
+			_timeInKeyframe -= nextFrame->duration;
 	}
 
-	double				t = _timeInKeyframe / (*nextFrame).duration;
+	double				t = _timeInKeyframe / nextFrame->duration;
 	matrix::vec3		pos;
 	matrix::vec3		scale;
 	matrix::quaternion	rot;
 	if (++nextFrame == _animationsFrames[_animation].end())
 		nextFrame = _animationsFrames[_animation].begin();
 
-	for (std::pair<BoneNode::body_part, AnimNode> curr : (*_currKeyframe).movement)
+	for (std::pair<BoneNode::body_part, AnimNode> curr : _currKeyframe->movement)
 	{
-		pos = matrix::lerp(curr.second.pos, (*nextFrame).movement[curr.first].pos, t);
-		scale = matrix::lerp(curr.second.scaling, (*nextFrame).movement[curr.first].scaling, t);
-		rot = matrix::slerp(curr.second.rotation, (*nextFrame).movement[curr.first].rotation, t);
+		pos = matrix::lerp(curr.second.pos, nextFrame->movement[curr.first].pos, t);
+		scale = matrix::lerp(curr.second.scaling, nextFrame->movement[curr.first].scaling, t);
+		rot = matrix::slerp(curr.second.rotation, nextFrame->movement[curr.first].rotation, t);
 
 		BoneNode*	currBone = _model->getBone(curr.first);
 		if (currBone == nullptr)
