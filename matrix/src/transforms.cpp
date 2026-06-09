@@ -171,5 +171,5 @@ matrix::mat4	matrix::compose(vec3 translation, quaternion rotation, vec3 scale)
 	matrix::identity(res);
 	res = translate(res, translation);
 
-	return matrix::scale(res * rotation.toMat4(), scale);
+	return matrix::scale(res * normalize(rotation).toMat4(), scale);
 }

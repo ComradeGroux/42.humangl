@@ -56,11 +56,9 @@ void	Animator::renderAnimation(double deltaTime)
 		throw std::runtime_error("You should provide a model before trying to animate something !");
 
 	_timeInKeyframe += deltaTime;
-
 	if (_timeInKeyframe >= _currKeyframe->duration)
 	{
 		_timeInKeyframe -= _currKeyframe->duration;
-
 		if (++_currKeyframe == _animationsFrames[_animation].end())
 		{
 			_currKeyframe = _animationsFrames[_animation].begin();
