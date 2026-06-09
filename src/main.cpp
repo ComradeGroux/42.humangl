@@ -18,6 +18,7 @@ static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim, Sta
 		cgl(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 		glfwGetFramebufferSize(window, &width, &height);
+		cgl(glViewport(0, 0, width, height));
 		aspectRatio = static_cast<float>(width) / static_cast<float>(height);
 		now = glfwGetTime();
 		deltaTime = now - lastTime;

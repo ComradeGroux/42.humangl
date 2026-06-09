@@ -19,6 +19,8 @@ Camera::Camera(float r, float theta, float phi)
 	_r = r;
 	_theta = theta;
 	_phi = phi;
+
+	updateRotation(0);
 }
 
 Camera::~Camera(void)
@@ -40,7 +42,7 @@ void	Camera::_updateVectors(void)
 
 matrix::mat4	Camera::getProjectionMatrix(float aspectRatio) const
 {
-	return matrix::perspective(_fov, aspectRatio, 0.001f, 100.0f);
+	return matrix::perspective(_fov, aspectRatio, 0.1f, 100.0f);
 }
 
 matrix::mat4	Camera::getViewMatrix(void) const
@@ -50,7 +52,7 @@ matrix::mat4	Camera::getViewMatrix(void) const
 
 matrix::mat4	Camera::getViewCenterMatrix(void) const
 {
-	return matrix::lookAt(_pos, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+	return matrix::lookAt(_pos, { 0.0f, 1.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
 }
 
 void	Camera::updateRotation(double deltaTime)
