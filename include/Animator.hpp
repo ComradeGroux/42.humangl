@@ -44,6 +44,7 @@ class Animator {
 	public:
 		Animator(void);
 		Animator(BoneNode* model);
+		~Animator(void);
 
 		void			loadModel(BoneNode* model);
 		void			chooseAnimation(AnimationType animation);

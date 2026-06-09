@@ -1,8 +1,6 @@
 #include "Animator.hpp"
 #include "lerp.hpp"
 
-#include <iostream>
-
 Animator::Animator(void)
 {
 	_createAnimations();
@@ -11,8 +9,17 @@ Animator::Animator(void)
 
 Animator::Animator(BoneNode* model): _model(model)
 {
+	if (_model == nullptr)
+		throw std::runtime_error("Failed to allocate the character");
+
 	_createAnimations();
 	chooseAnimation(ANIM_TPOSE);
+}
+
+Animator::~Animator(void)
+{
+	if (_model != nullptr)
+		delete _model;
 }
 
 void	Animator::_createAnimations(void)
@@ -25,6 +32,9 @@ void	Animator::_createAnimations(void)
 
 void	Animator::loadModel(BoneNode* model)
 {
+	if (model == nullptr)
+		throw std::runtime_error("The provided model is NULL");
+
 	_model = model;
 }
 

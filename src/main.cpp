@@ -41,26 +41,22 @@ static void	mainLoop(GLFWwindow* window, Renderer& renderer, Animator& anim, Sta
 
 static int	inOpenGLContext(GLFWwindow* window)
 {
-	BoneNode*	human = nullptr;
 	Camera 		camera(4.0f, 0.3f, 0.3f);
 	Renderer	renderer(camera, "shader/basic.vert", "shader/basic.frag");
 	State		state;
 	glfwSetWindowUserPointer(window, &state);
 	try
 	{
-		human = createHuman([&renderer](const matrix::mat4& mat) { renderer.draw(mat); });
-		Animator	animator(human);
+		Animator	animator(createHuman([&renderer](const matrix::mat4& mat) { renderer.draw(mat); }));
 		mainLoop(window, renderer, animator, state);
 	}
 	catch (std::exception& e)
 	{
 		std::cerr << e.what() << std::endl;
-		if (human != nullptr)
-			delete human;
+		clearOpenGLInstance(window);
 		return 1;
 	}
 
-	delete human;
 	return 0;
 }
 
