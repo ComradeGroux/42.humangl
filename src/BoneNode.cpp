@@ -7,13 +7,10 @@ BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f) : _drawFunc(f)
 	matrix::identity(animatedTransform);
 }
 
-BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f, matrix::mat4 transform)
+BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f, const matrix::mat4& transform, const matrix::vec3& scale)
 {
 	_drawFunc = f;
-	_scale = matrix::vec3(transform.data[0], transform.data[5], transform.data[10]);
-	transform.data[0] = 1.0f;
-	transform.data[5] = 1.0f;
-	transform.data[10] = 1.0f;
+	_scale = scale;
 	_localTransform = transform;
 	matrix::identity(animatedTransform);
 }
@@ -38,19 +35,25 @@ void	BoneNode::clearAndFreeChildren(void)
 void	BoneNode::render(void)
 {
 	MatrixStack	stack;
-	_render(stack);
+	_render(stack, { 1.0f, 1.0f, 1.0f });
 }
 
-void	BoneNode::_render(MatrixStack& stack)
+void	BoneNode::_render(MatrixStack& stack, const matrix::vec3& parentScale)
 {
 	stack.push();
-	stack.apply(_localTransform * animatedTransform);
+
+	matrix::mat4 adjustedTransform = _localTransform;
+	adjustedTransform.data[12] *= parentScale.x;
+	adjustedTransform.data[13] *= parentScale.y;
+	adjustedTransform.data[14] *= parentScale.z;
+
+	stack.apply(adjustedTransform * animatedTransform);
 
 	if (_drawFunc)
 		_drawFunc(matrix::scale(stack.top(), _scale));
 
 	for (std::pair<body_part, BoneNode *> child : _children)
-		child.second->_render(stack);
+		child.second->_render(stack, _scale);
 
 	stack.pop();
 }
@@ -70,4 +73,9 @@ BoneNode*	BoneNode::getBone(body_part bone)
 			return curr;
 	}
 	return nullptr;
+}
+
+matrix::vec3	BoneNode::getScale(void) const
+{
+	return _scale;
 }

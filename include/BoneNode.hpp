@@ -27,13 +27,13 @@ class BoneNode {
 		std::map<body_part, BoneNode *>				_children;
 		std::function<void (const matrix::mat4&)>	_drawFunc;
 
-		void	_render(MatrixStack& stack);
+		void	_render(MatrixStack& stack, const matrix::vec3& parentScale);
 
 	public:
 		matrix::mat4	animatedTransform;
 
 		BoneNode(std::function<void (const matrix::mat4&)> f);
-		BoneNode(std::function<void (const matrix::mat4&)> f, matrix::mat4 transform);
+		BoneNode(std::function<void (const matrix::mat4&)> f, const matrix::mat4& transform, const matrix::vec3& scale );
 		~BoneNode(void);
 
 		void	addChild(body_part name, BoneNode* child);
@@ -41,5 +41,6 @@ class BoneNode {
 
 		void	render(void);
 
-		BoneNode*	getBone(body_part bone);
+		BoneNode*		getBone(body_part bone);
+		matrix::vec3	getScale(void) const;
 };
