@@ -3,14 +3,16 @@
 BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f) : _drawFunc(f)
 {
 	matrix::identity(_localTransform);
-	_scale = matrix::vec3(1.0f, 1.0f, 1.0f);
+	_scale = {1.0f, 1.0f, 1.0f};
+	_pivot = {0.0f, 0.0f, 0.0f};
 	matrix::identity(animatedTransform);
 }
 
-BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f, const matrix::mat4& transform, const matrix::vec3& scale)
+BoneNode::BoneNode(std::function<void (const matrix::mat4&)> f, const matrix::mat4& transform, const matrix::vec3& pivot, const matrix::vec3& scale)
 {
 	_drawFunc = f;
 	_scale = scale;
+	_pivot = pivot;
 	_localTransform = transform;
 	matrix::identity(animatedTransform);
 }
@@ -78,4 +80,9 @@ BoneNode*	BoneNode::getBone(body_part bone)
 matrix::vec3	BoneNode::getScale(void) const
 {
 	return _scale;
+}
+
+matrix::vec3	BoneNode::getPivot(void) const
+{
+	return _pivot;
 }

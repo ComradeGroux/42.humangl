@@ -17,7 +17,6 @@ struct AnimNode {
 class Animator {
 	public:
 		enum AnimationType {
-			ANIM_TPOSE,
 			ANIM_IDLE,
 			ANIM_WALK,
 			ANIM_JUMP

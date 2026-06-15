@@ -60,8 +60,6 @@ static void	key_cb(GLFWwindow* window, int key, int scancode, int action, int mo
 		state->animation = Animator::ANIM_WALK;
 	else if (key == GLFW_KEY_3 && action == GLFW_PRESS)
 		state->animation = Animator::ANIM_JUMP;
-	else if (key == GLFW_KEY_0 && action == GLFW_PRESS)
-		state->animation = Animator::ANIM_TPOSE;
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		state->autorotate = !(state->autorotate);
 }
@@ -122,92 +120,102 @@ static matrix::vec3	computeAnchor(matrix::vec3 childAnchor, matrix::vec3 parentA
 BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 {
 	matrix::vec3	scale = { 1.0f, 1.0f, 1.0f };
+	matrix::vec3	pivot = {0.0f, 0.0f, 0.0f};
 	matrix::mat4	transform;
 	matrix::identity(transform);
 	transform = matrix::translate(transform, {0.0f, 0.75f, 0.0f});
-	BoneNode*		root = new BoneNode(nullptr, transform, scale);
+	BoneNode*		root = new BoneNode(nullptr, transform, -pivot / 2.0f, scale);
 
 	matrix::identity(transform);
 	scale = {0.5f, 1.0f, 0.7f};
 	transform = matrix::translate(transform, {0.0f, 0.0f, 0.0f});
-	BoneNode*		chest = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		chest = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 
 	matrix::identity(transform);
 	scale = {0.55f, 0.55f, 0.55f};
+	pivot = {0.0f, 0.5f, 0.0f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, 0.5f, 0.0f},
+		pivot,
 		{0.0f, 0.5f, 0.0f},
 		scale, chest->getScale()
 	));
-	BoneNode*		head = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		head = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, -0.5f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, -0.5f},
+		pivot,
 		{0.0f, 0.5f, -0.5f},
 		scale, chest->getScale()
 	));
-	BoneNode*		upperArmLeft = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		upperArmLeft = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, 0.0f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, 0.0f},
+		pivot,
 		{0.0f, -0.5f, 0.0f},
 		scale, upperArmLeft->getScale()
 	));
-	BoneNode*		lowerArmLeft = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		lowerArmLeft = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, 0.5f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, 0.5f},
+		pivot,
 		{0.0f, 0.5f, 0.5f},
 		scale, chest->getScale()
 	));
-	BoneNode*		upperArmRight = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		upperArmRight = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, 0.0f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, 0.0f},
+		pivot,
 		{0.0f, -0.5f, 0.0f},
 		scale, upperArmRight->getScale()
 	));
-	BoneNode*		lowerArmRight = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		lowerArmRight = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, 0.5f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, 0.5f},
+		pivot,
 		{0.0f, -0.5f, -0.5f},
 		scale, chest->getScale()
 	));
-	BoneNode*		upperLegLeft = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		upperLegLeft = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, 0.0f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, 0.0f},
+		pivot,
 		{0.0f, -0.5f, 0.0f},
 		scale, upperLegLeft->getScale()
 	));
-	BoneNode*		lowerLegLeft = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		lowerLegLeft = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, -0.5f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, -0.5f},
+		pivot,
 		{0.0f, -0.5f, 0.5f},
 		scale, chest->getScale()
 	));
-	BoneNode*		upperLegRight = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		upperLegRight = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
+	pivot = {0.0f, -0.5f, 0.0f};
 	transform = matrix::translate(transform, computeAnchor(
-		{0.0f, -0.5f, 0.0f},
+		pivot,
 		{0.0f, -0.5f, 0.0f},
 		scale, upperLegRight->getScale()
 	));
-	BoneNode*		lowerLegRight = new BoneNode(drawFunc, transform, scale);
+	BoneNode*		lowerLegRight = new BoneNode(drawFunc, transform, -pivot / 2.0f, scale);
 
 	root->addChild(BoneNode::body_part::CHEST, chest);
 	chest->addChild(BoneNode::body_part::HEAD, head);

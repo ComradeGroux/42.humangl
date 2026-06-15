@@ -19,4 +19,5 @@ namespace matrix {
 	mat4	perspective(float fov_degree, float aspect, float near, float far);
 	mat4	ortho(float left, float right, float bottom, float top, float near, float far);
 	mat4	compose(vec3 translation, quaternion rotation, vec3 scale);
+	mat4	compose(vec3 translation, quaternion rotation, vec3 scale, vec3 pivot);
 }

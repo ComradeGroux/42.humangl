@@ -186,7 +186,11 @@ float	matrix::quaternion::norme(void) const
 void	matrix::quaternion::normalize(void)
 {
 	float		norm = this->norme();
-
+	if (norm < 1e-6f)
+	{
+		h = 1.0f; i = 0.0f; j = 0.0f; k = 0.0f;
+		return;
+	}
 	this->h = this->h / norm;
 	this->i = this->i / norm;
 	this->j = this->j / norm;

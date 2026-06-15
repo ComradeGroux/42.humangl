@@ -128,7 +128,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					BoneNode::body_part::UPPER_ARM_RIGHT,
 					{
 						.pos = {},
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.3f },
+						.rotation = { 1.0f, 0.0f, 0.0f, 0.5f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -136,7 +136,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					BoneNode::body_part::LOWER_ARM_RIGHT,
 					{
 						.pos = {},
-						.rotation = { 1.0f , 0.0f, 0.0f, -0.05f },
+						.rotation = { 1.0f , 0.0f, 0.0f, -0.15f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -167,8 +167,8 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 				{
 					BoneNode::body_part::LOWER_LEG_RIGHT,
 					{
-						.pos = { 0.2f, 0.0f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.3f },
+						.pos = {},
+						.rotation = { 1.0f, 0.0f, 0.0f, 0.15f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				}
@@ -283,7 +283,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					BoneNode::body_part::UPPER_ARM_LEFT,
 					{
 						.pos = {},
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.3f },
+						.rotation = { 1.0f, 0.0f, 0.0f, 0.5f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -307,7 +307,7 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 					BoneNode::body_part::LOWER_ARM_RIGHT,
 					{
 						.pos = {},
-						.rotation = {},
+						.rotation = { 1.0f, 0.0f, -0.1f, 0.05f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},
@@ -322,8 +322,8 @@ std::list<Animator::KeyFrame>	Animator::_createWalk(void)
 				{
 					BoneNode::body_part::LOWER_LEG_LEFT,
 					{
-						.pos = { 0.2f, 0.0f, 0.0f },
-						.rotation = { 1.0f, 0.0f, 0.0f, 0.3f },
+						.pos = {},
+						.rotation = { 1.0f, 0.0f, 0.0f, 0.15f },
 						.scaling = { 1.0f, 1.0f, 1.0f }
 					}
 				},

@@ -173,3 +173,15 @@ matrix::mat4	matrix::compose(vec3 translation, quaternion rotation, vec3 scale)
 
 	return matrix::scale(res * normalize(rotation).toMat4(), scale);
 }
+
+matrix::mat4	matrix::compose(vec3 translation, quaternion rotation, vec3 scale, vec3 pivot)
+{
+	mat4	res, pivotTransform;
+
+	matrix::identity(res);
+	matrix::identity(pivotTransform);
+	res = translate(res, translation);
+	pivotTransform = translate(pivotTransform, pivot) * normalize(rotation).toMat4() * translate(pivotTransform, -pivot);
+
+	return matrix::scale(res * pivotTransform, scale);
+}

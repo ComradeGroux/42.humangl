@@ -4,7 +4,7 @@
 Animator::Animator(void)
 {
 	_createAnimations();
-	chooseAnimation(ANIM_TPOSE);
+	chooseAnimation(ANIM_IDLE);
 }
 
 Animator::Animator(BoneNode* model): _model(model)
@@ -13,7 +13,7 @@ Animator::Animator(BoneNode* model): _model(model)
 		throw std::runtime_error("Failed to allocate the character");
 
 	_createAnimations();
-	chooseAnimation(ANIM_TPOSE);
+	chooseAnimation(ANIM_IDLE);
 }
 
 Animator::~Animator(void)
@@ -24,7 +24,6 @@ Animator::~Animator(void)
 
 void	Animator::_createAnimations(void)
 {
-	_animationsFrames[ANIM_TPOSE] = _createTPose();
 	_animationsFrames[ANIM_IDLE] = _createIdle();
 	_animationsFrames[ANIM_WALK] = _createWalk();
 	_animationsFrames[ANIM_JUMP] = _createJump();
@@ -86,7 +85,7 @@ void	Animator::renderAnimation(double deltaTime)
 		if (currBone == nullptr)
 			throw std::runtime_error("Bone does not exist !");
 
-		currBone->animatedTransform = matrix::compose(pos, rot, scale);
+		currBone->animatedTransform = matrix::compose(pos, rot, scale, currBone->getPivot() * currBone->getScale());
 	}
 
 	_model->render();
