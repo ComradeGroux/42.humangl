@@ -110,6 +110,15 @@ void	clearOpenGLInstance(GLFWwindow *window)
 	glfwTerminate();
 }
 
+static matrix::vec3	computeAnchor(matrix::vec3 childAnchor, matrix::vec3 parentAnchor, matrix::vec3 childScale, matrix::vec3 parentScale)
+{
+	return {
+		parentAnchor.x + childAnchor.x * (childScale.x / parentScale.x),
+		parentAnchor.y + childAnchor.y * (childScale.y / parentScale.y),
+		parentAnchor.z + childAnchor.z * (childScale.z / parentScale.z)
+	};
+}
+
 BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 {
 	matrix::vec3	scale = { 1.0f, 1.0f, 1.0f };
@@ -125,89 +134,89 @@ BoneNode*	createHuman(std::function<void (const matrix::mat4&)> drawFunc)
 	BoneNode*		chest = new BoneNode(drawFunc, transform, scale);
 
 	matrix::identity(transform);
-	parentScale = chest->getScale();
 	scale = {0.55f, 0.55f, 0.55f};
-	transform = matrix::translate(transform, {
-		0.0f,
-		0.5f + 0.5f * (scale.y / parentScale.y),
-		0.0f
-	});
+	parentScale = chest->getScale();
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, 0.5f, 0.0f},
+		{0.0f, 0.5f, 0.0f},
+		scale, parentScale
+	));
 	BoneNode*		head = new BoneNode(drawFunc, transform, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = chest->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		0.5f * (scale.y / parentScale.y),
-		-0.5f - 0.5f * (scale.z / parentScale.z)
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, -0.5f},
+		{0.0f, 0.5f, -0.5f},
+		scale, parentScale
+	));
 	BoneNode*		upperArmLeft = new BoneNode(drawFunc, transform, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = upperArmLeft->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		-0.5f - 0.5f * (scale.y / parentScale.y),
-		0.0f
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, 0.0f},
+		{0.0f, -0.5f, 0.0f},
+		scale, parentScale
+	));
 	BoneNode*		lowerArmLeft = new BoneNode(drawFunc, transform, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = chest->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		0.5f * (scale.y / parentScale.y),
-		0.5f + 0.5f * (scale.z / parentScale.z)
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, 0.5f},
+		{0.0f, 0.5f, 0.5f},
+		scale, parentScale
+	));
 	BoneNode*		upperArmRight = new BoneNode(drawFunc, transform, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = upperArmRight->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		-0.5f - 0.5f * (scale.y / parentScale.y),
-		0.0f
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, 0.0f},
+		{0.0f, -0.5f, 0.0f},
+		scale, parentScale
+	));
 	BoneNode*		lowerArmRight = new BoneNode(drawFunc, transform, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = chest->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		-0.5f - 0.5f * (scale.y / parentScale.y),
-		-0.5f + 0.5f * (scale.z / parentScale.z)
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, 0.5f},
+		{0.0f, -0.5f, -0.5f},
+		scale, parentScale
+	));
 	BoneNode*		upperLegLeft = new BoneNode(drawFunc, transform, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = upperLegLeft->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		-0.5f - 0.5f * (scale.y / parentScale.y),
-		0.0f
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, 0.0f},
+		{0.0f, -0.5f, 0.0f},
+		scale, parentScale
+	));
 	BoneNode*		lowerLegLeft = new BoneNode(drawFunc, transform, scale);
 
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = chest->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		-0.5f - 0.5f * (scale.y / parentScale.y),
-		0.5f - 0.5f * (scale.z / parentScale.z)
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, -0.5f},
+		{0.0f, -0.5f, 0.5f},
+		scale, parentScale
+	));
 	BoneNode*		upperLegRight = new BoneNode(drawFunc, transform, scale);
 	matrix::identity(transform);
 	scale = {0.35f, 0.5f, 0.3f};
 	parentScale = upperLegRight->getScale();
-	transform = matrix::translate(transform, {
-		0.0f,
-		-0.5f - 0.5f * (scale.y / parentScale.y),
-		0.0f
-	});
+	transform = matrix::translate(transform, computeAnchor(
+		{0.0f, -0.5f, 0.0f},
+		{0.0f, -0.5f, 0.0f},
+		scale, parentScale
+	));
 	BoneNode*		lowerLegRight = new BoneNode(drawFunc, transform, scale);
 
 	root->addChild(BoneNode::body_part::CHEST, chest);
